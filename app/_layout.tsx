@@ -18,8 +18,9 @@ export default function RootLayout() {
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backgroundColor }}>
       <View style={{ flex: 1, marginInline: 20 }}>
         <TopBar />
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="month_presentation" />
         </Stack>
       </View>
     </SafeAreaView>

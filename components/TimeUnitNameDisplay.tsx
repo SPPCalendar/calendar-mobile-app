@@ -8,7 +8,7 @@ interface MonthNameDisplayProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const MonthNameDisplay: React.FC<MonthNameDisplayProps> = ({
+const TimeUnitNameDisplay: React.FC<MonthNameDisplayProps> = ({
   monthName,
   style,
 }) => {
@@ -38,4 +38,4 @@ const MonthNameDisplay: React.FC<MonthNameDisplayProps> = ({
   );
 };
 
-export default MonthNameDisplay;
+export default TimeUnitNameDisplay;

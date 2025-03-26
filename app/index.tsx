@@ -1,7 +1,5 @@
-import AddEventButton from "@/components/AddEventButton";
-import CalendarMonthGrid from "@/components/CalendarMonthGrid";
-import MonthNameDisplay from "@/components/MonthNameDisplay";
-import WeekDaysDisplay from "@/components/WeekDaysDisplay";
+import CalendarWeekGrid from "@/components/CalendarWeekGrid";
+import TimeUnitNameDisplay from "@/components/TimeUnitNameDisplay";
 import { Colors } from "@/contants/Colors";
 import { View } from "react-native";
 
@@ -15,10 +13,12 @@ export default function Index() {
         backgroundColor: Colors.backgroundColor,
       }}
     >
-      <MonthNameDisplay style={{ marginTop: 20 }} monthName="Травень" />
-      <WeekDaysDisplay style={{ marginTop: 20 }} />
-      <CalendarMonthGrid style={{ marginTop: 26 }} />
-      <AddEventButton />
+      <TimeUnitNameDisplay
+        style={{ marginTop: 20 }}
+        monthName="Травень (19 тиждень)"
+      />
+
+      <CalendarWeekGrid style={{ marginTop: 30 }} />
     </View>
   );
 }
