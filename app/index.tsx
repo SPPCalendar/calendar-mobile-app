@@ -1,4 +1,5 @@
 import MonthNameDisplay from "@/components/MonthNameDisplay";
+import WeekDaysDisplay from "@/components/WeekDaysDisplay";
 import { Colors } from "@/contants/Colors";
 import { View } from "react-native";
 
@@ -13,6 +14,7 @@ export default function Index() {
       }}
     >
       <MonthNameDisplay style={{ marginTop: 20 }} monthName="Травень" />
+      <WeekDaysDisplay style={{ marginTop: 20 }} />
     </View>
   );
 }
