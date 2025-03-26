@@ -1,15 +1,18 @@
-import { Text, View } from "react-native";
+import MonthNameDisplay from "@/components/MonthNameDisplay";
+import { Colors } from "@/contants/Colors";
+import { View } from "react-native";
 
 export default function Index() {
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
         alignItems: "center",
+        height: 20,
+        backgroundColor: Colors.backgroundColor,
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <MonthNameDisplay style={{ marginTop: 20 }} monthName="Травень" />
     </View>
   );
 }
