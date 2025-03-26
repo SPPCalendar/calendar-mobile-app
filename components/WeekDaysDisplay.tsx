@@ -19,8 +19,8 @@ const WeekDaysDisplay: React.FC<MonthNameDisplayProps> = ({ style }) => {
         style,
       ]}
     >
-      {weekDaysFirstLetters.map((letter) => (
-        <Text>{letter}</Text>
+      {weekDaysFirstLetters.map((letter, index) => (
+        <Text key={index}>{letter}</Text>
       ))}
     </View>
   );

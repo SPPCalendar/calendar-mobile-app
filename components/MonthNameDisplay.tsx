@@ -2,8 +2,6 @@ import React from "react";
 import { StyleProp, Text, View, ViewStyle } from "react-native";
 import ChevronRight from "./icons/ChevronRight";
 import ChevronLeft from "./icons/ChevronLeft";
-import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat";
-import AppLoading from "./AppLoading";
 
 interface MonthNameDisplayProps {
   monthName: string;
@@ -14,14 +12,6 @@ const MonthNameDisplay: React.FC<MonthNameDisplayProps> = ({
   monthName,
   style,
 }) => {
-  let [fontsLoaded] = useFonts({
-    Montserrat_400Regular,
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
-
   return (
     <View
       style={[

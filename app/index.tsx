@@ -1,3 +1,4 @@
+import CalendarMonthGrid from "@/components/CalendarMonthGrid";
 import MonthNameDisplay from "@/components/MonthNameDisplay";
 import WeekDaysDisplay from "@/components/WeekDaysDisplay";
 import { Colors } from "@/contants/Colors";
@@ -15,6 +16,7 @@ export default function Index() {
     >
       <MonthNameDisplay style={{ marginTop: 20 }} monthName="Травень" />
       <WeekDaysDisplay style={{ marginTop: 20 }} />
+      <CalendarMonthGrid style={{ marginTop: 26 }} />
     </View>
   );
 }
