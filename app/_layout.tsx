@@ -21,6 +21,7 @@ export default function RootLayout() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />
           <Stack.Screen name="month_presentation" />
+          <Stack.Screen name="week_presentation" />
         </Stack>
       </View>
     </SafeAreaView>

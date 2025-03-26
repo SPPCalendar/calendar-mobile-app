@@ -1,9 +1,9 @@
-import DayEventsList from "@/components/DayEventsList";
+import CalendarWeekGrid from "@/components/CalendarWeekGrid";
 import TimeUnitNameDisplay from "@/components/TimeUnitNameDisplay";
 import { Colors } from "@/contants/Colors";
 import { View } from "react-native";
 
-export default function Index() {
+export default function WeekPresentation() {
   return (
     <View
       style={{
@@ -15,9 +15,10 @@ export default function Index() {
     >
       <TimeUnitNameDisplay
         style={{ marginTop: 20 }}
-        monthName="Травень 7(вт)"
+        monthName="Травень (19 тиждень)"
       />
-      <DayEventsList style={{ marginTop: 20 }} />
+
+      <CalendarWeekGrid style={{ marginTop: 30 }} />
     </View>
   );
 }
