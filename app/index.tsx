@@ -1,3 +1,4 @@
+import AddEventButton from "@/components/AddEventButton";
 import CalendarMonthGrid from "@/components/CalendarMonthGrid";
 import MonthNameDisplay from "@/components/MonthNameDisplay";
 import WeekDaysDisplay from "@/components/WeekDaysDisplay";
@@ -17,6 +18,7 @@ export default function Index() {
       <MonthNameDisplay style={{ marginTop: 20 }} monthName="Травень" />
       <WeekDaysDisplay style={{ marginTop: 20 }} />
       <CalendarMonthGrid style={{ marginTop: 26 }} />
+      <AddEventButton />
     </View>
   );
 }
