@@ -6,8 +6,10 @@ import { useCalendarPresentationStore } from "@/stores/calendar_presentation_sto
 import { CalendarPresentation } from "@/enums/CalendarPresentation";
 import { useOpacityStore } from "@/stores/opacity_store";
 import { useModalStore } from "@/stores/modal_store";
+import { useRouter } from "expo-router";
 
 const CalendarPresentationPickerModal = () => {
+  const router = useRouter();
   const makeOpaque = useOpacityStore((state) => state.makeOpaque);
   const presentation = useCalendarPresentationStore(
     (state) => state.presentation
@@ -22,6 +24,21 @@ const CalendarPresentationPickerModal = () => {
     changePresentation(presentation);
     makeOpaque();
     changeModalShown(false);
+
+    switch (presentation) {
+      case CalendarPresentation.Day:
+        router.navigate("/presentation/day_presentation");
+        break;
+      case CalendarPresentation.Week:
+        router.navigate("/presentation/week_presentation");
+        break;
+      case CalendarPresentation.Month:
+        router.navigate("/presentation/month_presentation");
+        break;
+      case CalendarPresentation.Year:
+        router.navigate("/presentation/year_respresentation");
+        break;
+    }
   };
 
   return (
