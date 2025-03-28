@@ -1,9 +1,10 @@
-import CalendarYearGrid from "@/components/CalendarYearGrid";
+import DayEventsList from "@/components/DayEventsList";
 import TimeUnitNameDisplay from "@/components/TimeUnitNameDisplay";
 import { Colors } from "@/contants/Colors";
+import React from "react";
 import { View } from "react-native";
 
-export default function Index() {
+const day_presentation = () => {
   return (
     <View
       style={{
@@ -13,8 +14,13 @@ export default function Index() {
         backgroundColor: Colors.backgroundColor,
       }}
     >
-      <TimeUnitNameDisplay style={{ marginTop: 20 }} monthName="2025" />
-      <CalendarYearGrid style={{ marginTop: 35 }} />
+      <TimeUnitNameDisplay
+        style={{ marginTop: 20 }}
+        monthName="Травень 7(вт)"
+      />
+      <DayEventsList style={{ marginTop: 20 }} />
     </View>
   );
-}
+};
+
+export default day_presentation;
