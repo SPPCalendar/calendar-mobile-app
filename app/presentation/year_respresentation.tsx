@@ -3,7 +3,7 @@ import TimeUnitNameDisplay from "@/components/TimeUnitNameDisplay";
 import { Colors } from "@/contants/Colors";
 import { View } from "react-native";
 
-export default function Index() {
+export default function YearRespresentation() {
   return (
     <View
       style={{
