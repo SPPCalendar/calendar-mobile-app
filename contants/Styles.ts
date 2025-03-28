@@ -18,4 +18,8 @@ export const Styles = StyleSheet.create({
     fontFamily: "Montserrat_400Regular",
     fontSize: 18,
   },
+  chooseCalendarPresentationText: {
+    fontFamily: "Montserrat_400Regular",
+    fontSize: 20,
+  },
 });

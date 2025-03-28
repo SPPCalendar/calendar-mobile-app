@@ -12,6 +12,7 @@ const day_presentation = () => {
         alignItems: "center",
         height: 20,
         backgroundColor: Colors.backgroundColor,
+        paddingInline: 13,
       }}
     >
       <TimeUnitNameDisplay
