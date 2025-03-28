@@ -1,5 +1,13 @@
+const BaseColors = {
+  darkGreen: "#40513B",
+  lightGreen: "#C3E0BE",
+};
+
 export const Colors = {
-  topBar: "#C3E0BE",
+  topBar: BaseColors.lightGreen,
   backgroundColor: "#FFFFF4",
-  formTopBarBg: "#40513B",
+  formTopBarBg: BaseColors.darkGreen,
+  textInputBg: "#EDF1D6",
+  textInputPlaceholder: "#5E5E5E",
+  filledCheckboxBg: BaseColors.darkGreen,
 };
