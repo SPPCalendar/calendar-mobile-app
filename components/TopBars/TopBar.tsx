@@ -9,7 +9,8 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { useOpacityStore } from "@/stores/opacity_store";
 import { useModalStore } from "@/stores/modal_store";
-import { useRouter } from "expo-router";
+import { Href, useRouter } from "expo-router";
+
 
 export default function TopBar() {
   const router = useRouter();
@@ -43,7 +44,7 @@ export default function TopBar() {
           <MoreGridBigIcon />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => router.push("/auth/login")}>
+        <TouchableOpacity onPress={() => router.push("/login" as Href)}>
           <MoreVerticalIcon />
         </TouchableOpacity>
       </View>
