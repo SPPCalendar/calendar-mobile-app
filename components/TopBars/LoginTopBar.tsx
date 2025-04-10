@@ -33,7 +33,7 @@ const LoginTopBar = () => {
           color: Colors.backgroundColor,
         }}
       >
-        Логін
+        Вхід
       </Text>
 
       <View
