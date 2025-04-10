@@ -29,28 +29,28 @@ const RegisterForm = () => {
       router.replace("/" as Href);
     } catch (error: any) {
       console.error("Registration failed:", error?.response?.data || error.message);
-      alert("Registration failed. Please check your credentials.");
+      alert("Не вдалося зареєструватися. Спробуйте ще раз.");
     }
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.backgroundColor, padding: 24, gap: 16 }}>
       <TextInput
-        placeholder="Display Name"
+        placeholder="Ім'я для відображення"
         value={displayName}
         onChangeText={setDisplayName}
         style={Styles.textInput}
         placeholderTextColor={Colors.textInputPlaceholder}
       />
       <TextInput
-        placeholder="Username"
+        placeholder="Ім'я користувача"
         value={username}
         onChangeText={setUsername}
         style={Styles.textInput}
         placeholderTextColor={Colors.textInputPlaceholder}
       />
       <TextInput
-        placeholder="Email"
+        placeholder="Електронна пошта"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -59,7 +59,7 @@ const RegisterForm = () => {
         placeholderTextColor={Colors.textInputPlaceholder}
       />
       <TextInput
-        placeholder="Password"
+        placeholder="Пароль"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
@@ -76,12 +76,12 @@ const RegisterForm = () => {
         }}
         onPress={handleRegister}
       >
-        <Text style={{ color: "#fff", fontSize: 18 }}>Register</Text>
+        <Text style={{ color: "#fff", fontSize: 18 }}>Зареєструватись</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.push("./login")}>
         <Text style={{ textAlign: "center", color: Colors.formTopBarBg }}>
-          Already have an account? Log in
+          Вже маєте акаунт? Увійти
         </Text>
       </TouchableOpacity>
     </View>

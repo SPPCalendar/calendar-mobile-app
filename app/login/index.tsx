@@ -26,14 +26,14 @@ const LoginForm = () => {
       router.replace("/" as Href);
     } catch (error: any) {
       console.error("Login failed:", error?.response?.data || error.message);
-      alert("Login failed. Please check your credentials.");
+      alert("Невірний логін або пароль. Спробуйте ще раз.");
     }
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.backgroundColor, padding: 24, gap: 16 }}>
       <TextInput
-        placeholder="Email"
+        placeholder="Електронна пошта"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -42,7 +42,7 @@ const LoginForm = () => {
         placeholderTextColor={Colors.textInputPlaceholder}
       />
       <TextInput
-        placeholder="Password"
+        placeholder="Пароль"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
@@ -59,12 +59,12 @@ const LoginForm = () => {
         }}
         onPress={handleLogin}
       >
-        <Text style={{ color: "#fff", fontSize: 18 }}>Log In</Text>
+        <Text style={{ color: "#fff", fontSize: 18 }}>Увійти</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.push("./register")}>
         <Text style={{ textAlign: "center", color: Colors.formTopBarBg }}>
-          Don't have an account? Register
+          Не маєте акаунт? Реєстрація
         </Text>
       </TouchableOpacity>
     </View>
