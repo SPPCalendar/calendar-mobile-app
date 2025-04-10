@@ -1,4 +1,4 @@
-import { CalendarPresentation } from "@/enums/CalendarPresentation";
+import { CalendarPresentation } from "@/types/CalendarPresentation";
 import { create } from "zustand";
 
 interface CalendarPresentationState {

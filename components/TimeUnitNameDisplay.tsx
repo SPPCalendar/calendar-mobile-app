@@ -1,15 +1,25 @@
 import React from "react";
-import { StyleProp, Text, View, ViewStyle } from "react-native";
+import {
+  StyleProp,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from "react-native";
 import ChevronRight from "./icons/ChevronRight";
 import ChevronLeft from "./icons/ChevronLeft";
 
 interface MonthNameDisplayProps {
   monthName: string;
+  onPressLeftArrow?: () => void;
+  onPressRightArrow?: () => void;
   style?: StyleProp<ViewStyle>;
 }
 
 const TimeUnitNameDisplay: React.FC<MonthNameDisplayProps> = ({
   monthName,
+  onPressLeftArrow,
+  onPressRightArrow,
   style,
 }) => {
   return (
@@ -24,7 +34,9 @@ const TimeUnitNameDisplay: React.FC<MonthNameDisplayProps> = ({
         style,
       ]}
     >
-      <ChevronRight />
+      <TouchableOpacity onPress={onPressLeftArrow}>
+        <ChevronRight />
+      </TouchableOpacity>
       <Text
         style={{
           fontFamily: "Montserrat_400Regular",
@@ -33,7 +45,9 @@ const TimeUnitNameDisplay: React.FC<MonthNameDisplayProps> = ({
       >
         {monthName}
       </Text>
-      <ChevronLeft />
+      <TouchableOpacity onPress={onPressRightArrow}>
+        <ChevronLeft />
+      </TouchableOpacity>
     </View>
   );
 };
