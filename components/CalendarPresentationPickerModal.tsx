@@ -3,7 +3,7 @@ import { View } from "react-native";
 import RadioButtonItem from "./RadioButtonItem";
 import { Colors } from "@/contants/Colors";
 import { useCalendarPresentationStore } from "@/stores/calendar_presentation_store";
-import { CalendarPresentation } from "@/enums/CalendarPresentation";
+import { CalendarPresentation } from "@/types/CalendarPresentation";
 import { useOpacityStore } from "@/stores/opacity_store";
 import { useModalStore } from "@/stores/modal_store";
 import { useRouter } from "expo-router";

@@ -1,17 +1,19 @@
 import React from "react";
 import { ScrollView, StyleProp, View, ViewStyle } from "react-native";
 import EventRow from "./EventRow";
+import { CalendarEvent } from "@/types/CalendarEvent";
 
 interface MonthNameDisplayProps {
+  events: CalendarEvent[];
   style?: StyleProp<ViewStyle>;
 }
 
-const DayEventsList: React.FC<MonthNameDisplayProps> = ({ style }) => {
+const DayEventsList: React.FC<MonthNameDisplayProps> = ({ events, style }) => {
   return (
     <ScrollView style={[{ width: "100%" }, style]}>
-      <EventRow eventName="Дн мами" eventDuration="Цілий день" />
-      <EventRow eventName="Дн мами" eventDuration="Цілий день" />
-      <EventRow eventName="Дн мами" eventDuration="Цілий день" />
+      {events.map((event) => (
+        <EventRow eventName="Дн мами" eventDuration="Цілий день" />
+      ))}
     </ScrollView>
   );
 };

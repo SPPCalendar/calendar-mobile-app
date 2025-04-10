@@ -83,4 +83,21 @@ const getMonthNumbers = (month: Month, year: number) => {
   console.log(result.nextMonth);
 };
 
-getMonthNumbers(Month.March, 2025);
+// getMonthNumbers(Month.March, 2025);
+
+export const formatUkrainianDate = (date: Date): string => {
+  const monthFormatter = new Intl.DateTimeFormat("uk-UA", { month: "long" });
+  const weekdayFormatter = new Intl.DateTimeFormat("uk-UA", {
+    weekday: "short",
+  });
+  const day = date.getDate();
+
+  const month = capitalize(monthFormatter.format(date));
+  const weekday = weekdayFormatter.format(date);
+
+  return `${month} ${day}(${weekday})`;
+};
+
+export const capitalize = (str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
