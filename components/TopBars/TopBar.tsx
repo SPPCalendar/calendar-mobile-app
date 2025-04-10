@@ -9,8 +9,10 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { useOpacityStore } from "@/stores/opacity_store";
 import { useModalStore } from "@/stores/modal_store";
+import { useRouter } from "expo-router";
 
 export default function TopBar() {
+  const router = useRouter();
   const makeDimmed = useOpacityStore((state) => state.makeDimmed);
   const changeModalShown = useModalStore((state) => state.changeModalShown);
 
