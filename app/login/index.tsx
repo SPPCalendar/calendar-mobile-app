@@ -1,16 +1,33 @@
 import { Colors } from "@/contants/Colors";
 import { Styles } from "@/contants/Styles";
-import { useRouter } from "expo-router";
+import { Href, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { TextInput, Text, View, TouchableOpacity } from "react-native";
+import api from "@/utils/api";
+import { useAuthStore } from "@/stores/auth_store";
 
 const LoginForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    console.log({ email, password });
+  const handleLogin = async () => {
+    try {
+      const response = await api.post("/auth/login", {
+        email,
+        password,
+      });
+  
+      const { accessToken } = response.data;
+  
+      useAuthStore.getState().setAccessToken(accessToken);
+  
+      console.log("Login successful");
+      router.replace("/" as Href);
+    } catch (error: any) {
+      console.error("Login failed:", error?.response?.data || error.message);
+      alert("Login failed. Please check your credentials.");
+    }
   };
 
   return (

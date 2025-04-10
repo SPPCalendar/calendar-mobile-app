@@ -1,8 +1,10 @@
 import { Colors } from "@/contants/Colors";
 import { Styles } from "@/contants/Styles";
-import { useRouter } from "expo-router";
+import { Href, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { TextInput, Text, View, TouchableOpacity } from "react-native";
+import api from "@/utils/api";
+import { useAuthStore } from "@/stores/auth_store";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -11,8 +13,24 @@ const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = () => {
-    console.log({ displayName, username, email, password });
+  const handleRegister = async () => {
+    try {
+      const response = await api.post("/auth/register", {
+        display_name: displayName,
+        username,
+        email,
+        password,
+      });
+  
+      const { accessToken } = response.data;
+  
+      useAuthStore.getState().setAccessToken(accessToken);
+  
+      router.replace("/" as Href);
+    } catch (error: any) {
+      console.error("Registration failed:", error?.response?.data || error.message);
+      alert("Registration failed. Please check your credentials.");
+    }
   };
 
   return (
