@@ -1,9 +1,9 @@
 import { View } from "react-native";
-import SearchIcon from "./icons/SearchIcon";
-import FilterIcon from "./icons/FilterIcon";
-import CalendarDaysIcon from "./icons/CalendarDaysIcon";
-import MoreGridBigIcon from "./icons/MoreGridBigIcon";
-import MoreVerticalIcon from "./icons/MoreVerticalIcon";
+import SearchIcon from "../icons/SearchIcon";
+import FilterIcon from "../icons/FilterIcon";
+import CalendarDaysIcon from "../icons/CalendarDaysIcon";
+import MoreGridBigIcon from "../icons/MoreGridBigIcon";
+import MoreVerticalIcon from "../icons/MoreVerticalIcon";
 import { Colors } from "@/contants/Colors";
 import React from "react";
 import { TouchableOpacity } from "react-native";
@@ -41,7 +41,9 @@ export default function TopBar() {
           <MoreGridBigIcon />
         </TouchableOpacity>
 
-        <MoreVerticalIcon />
+        <TouchableOpacity onPress={() => router.push("/auth/login")}>
+          <MoreVerticalIcon />
+        </TouchableOpacity>
       </View>
     </View>
   );

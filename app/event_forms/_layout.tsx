@@ -1,4 +1,4 @@
-import FormTopBar from "@/components/FormTopBar";
+import FormTopBar from "@/components/TopBars/FormTopBar";
 import { Colors } from "@/contants/Colors";
 import { Stack } from "expo-router";
 import { SafeAreaView, View } from "react-native";

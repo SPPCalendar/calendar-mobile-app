@@ -1,10 +1,10 @@
 import { Colors } from "@/contants/Colors";
 import React from "react";
 import { Text, View } from "react-native";
-import ArrowLeftMdIcon from "./icons/ArrowLeftMdIcon";
-import CheckBigIcon from "./icons/CheckBigIcon";
+import ArrowLeftMdIcon from "../icons/ArrowLeftMdIcon";
+import CheckBigIcon from "../icons/CheckBigIcon";
 
-const FormTopBar = () => {
+const RegisterTopBar = () => {
   return (
     <View
       style={{
@@ -33,7 +33,7 @@ const FormTopBar = () => {
           color: Colors.backgroundColor,
         }}
       >
-        Нова подія
+        Реєстрація
       </Text>
 
       <View
@@ -50,4 +50,4 @@ const FormTopBar = () => {
   );
 };
 
-export default FormTopBar;
+export default RegisterTopBar;
