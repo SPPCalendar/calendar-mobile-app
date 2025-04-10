@@ -101,3 +101,9 @@ export const formatUkrainianDate = (date: Date): string => {
 export const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+export const getUkrainianMonthName = (monthIndex: number): string => {
+  const date = new Date(2025, monthIndex - 1, 1);
+  const formatter = new Intl.DateTimeFormat("uk-UA", { month: "long" });
+  return capitalize(formatter.format(date));
+};

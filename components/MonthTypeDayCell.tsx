@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import MoreHorizontalIcon from "./icons/MoreHorizontalIcon";
 
 const MonthTypeDayCell = () => {
-  const x = ["1s", "2s", "3s", "4s", "5s"];
+  const x: string[] = ["1s", "2s", "3s", "4s", "5s"];
 
   return (
     <View style={{}}>
@@ -24,12 +24,12 @@ const MonthTypeDayCell = () => {
             style={{
               paddingBlock: 3,
               paddingInline: 2,
-              backgroundColor: "#FF9D57",
+              // backgroundColor: "#FFFFFF",
             }}
             key={index}
           >
             <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 12 }}>
-              Зустріч
+              {/* Зустріч */}
             </Text>
           </View>
         ))}
@@ -43,7 +43,7 @@ const MonthTypeDayCell = () => {
           paddingBottom: 1,
         }}
       >
-        <MoreHorizontalIcon />
+        {/* <MoreHorizontalIcon /> */}
       </View>
     </View>
   );
