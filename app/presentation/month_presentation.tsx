@@ -1,4 +1,3 @@
-import AddEventButton from "@/components/AddEventButton";
 import CalendarMonthGrid from "@/components/CalendarMonthGrid";
 import TimeUnitNameDisplay from "@/components/TimeUnitNameDisplay";
 import WeekDaysDisplay from "@/components/WeekDaysDisplay";
@@ -43,7 +42,6 @@ export default function MonthPresentation() {
       />
       <WeekDaysDisplay style={{ marginTop: 20 }} />
       <CalendarMonthGrid style={{ marginTop: 26 }} />
-      <AddEventButton />
     </View>
   );
 }

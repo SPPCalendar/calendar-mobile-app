@@ -1,3 +1,4 @@
+import AddEventButton from "@/components/AddEventButton";
 import TopBar from "@/components/TopBars/TopBar";
 import { Colors } from "@/contants/Colors";
 import { Stack } from "expo-router";
@@ -8,6 +9,8 @@ export default function RootLayout() {
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backgroundColor }}>
       <TopBar />
       <Stack screenOptions={{ headerShown: false }} />
+      <AddEventButton />
+      
     </SafeAreaView>
   );
 }
