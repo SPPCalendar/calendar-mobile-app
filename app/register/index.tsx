@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { TextInput, Text, View, TouchableOpacity } from "react-native";
 import api from "@/utils/api";
 import { useAuthStore } from "@/stores/auth_store";
+import { useCalendarStore } from "@/stores/calendar_store";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -22,9 +23,31 @@ const RegisterForm = () => {
         password,
       });
   
-      const { accessToken } = response.data;
-  
+      const { accessToken, userId } = response.data;
+      
       useAuthStore.getState().setAccessToken(accessToken);
+      const calendarRes = await api.post(
+        "/calendars",
+        {
+          calendar_name: "Default Calendar",
+          color: "#123456",
+          users: [
+            {
+              user_id: userId,
+              access_level: "owner",
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const newCalendarId = calendarRes.data.id;
+      useCalendarStore.getState().setCalendarId(newCalendarId);
+  
   
       router.replace("/" as Href);
     } catch (error: any) {

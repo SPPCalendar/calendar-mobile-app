@@ -9,6 +9,7 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { useOpacityStore } from "@/stores/opacity_store";
 import { useModalStore } from "@/stores/modal_store";
+import { useAuthStore } from "@/stores/auth_store";
 import { Href, useRouter } from "expo-router";
 
 
@@ -20,6 +21,17 @@ export default function TopBar() {
   const openCalendarPresentationPicker = () => {
     makeDimmed();
     changeModalShown(true);
+  };
+  
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const openUserProfileOrLogin = () => {
+    if (accessToken) {
+      // User is logged in
+      router.push("/profile");
+    } else {
+      // User not logged in
+      router.push("/login");
+    }
   };
 
   return (
@@ -44,7 +56,7 @@ export default function TopBar() {
           <MoreGridBigIcon />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => router.push("/login" as Href)}>
+        <TouchableOpacity onPress={() => openUserProfileOrLogin()}>
           <MoreVerticalIcon />
         </TouchableOpacity>
       </View>
