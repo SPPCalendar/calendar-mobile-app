@@ -4,7 +4,11 @@ import { Text, View } from "react-native";
 import ArrowLeftMdIcon from "../icons/ArrowLeftMdIcon";
 import CheckBigIcon from "../icons/CheckBigIcon";
 
-const FormTopBar = () => {
+interface FormTopBarProps {
+  title: string;
+}
+
+const FormTopBar: React.FC<FormTopBarProps> = ({title}) => {
   return (
     <View
       style={{
@@ -33,7 +37,7 @@ const FormTopBar = () => {
           color: Colors.backgroundColor,
         }}
       >
-        Нова подія
+        {title}
       </Text>
 
       <View

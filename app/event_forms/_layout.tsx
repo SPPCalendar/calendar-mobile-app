@@ -6,7 +6,7 @@ import { SafeAreaView, View } from "react-native";
 export default function RootLayout() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backgroundColor }}>
-      <FormTopBar />
+      <FormTopBar title="Нова подія" />
       <Stack screenOptions={{ headerShown: false }} />
     </SafeAreaView>
   );
