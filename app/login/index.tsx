@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { TextInput, Text, View, TouchableOpacity } from "react-native";
 import api from "@/utils/api";
 import { useAuthStore } from "@/stores/auth_store";
+import { useCalendarStore } from "@/stores/calendar_store";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -21,6 +22,22 @@ const LoginForm = () => {
       const { accessToken } = response.data;
   
       useAuthStore.getState().setAccessToken(accessToken);
+
+      // Fetch user's calendars
+      const calendarsResponse = await api.get('/calendars/me');
+
+      const calendars = calendarsResponse.data;
+
+      // Find "Default calendar"
+      const defaultCalendar = calendars.find(
+        (calendar: any) => calendar.calendar_name === "Default Calendar"
+      );
+
+      if (defaultCalendar) {
+        useCalendarStore.getState().setCalendarId(defaultCalendar.id);
+      } else {
+        console.warn("Default Calendar for user not found");
+      }
   
       console.log("Login successful");
       router.replace("/" as Href);

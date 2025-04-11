@@ -5,14 +5,21 @@ import { CalendarEvent } from "@/types/CalendarEvent";
 import { formatUkrainianDate } from "@/utils/utils";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import { useCalendarStore } from "@/stores/calendar_store";
+import api from "@/utils/api";
 
 const day_presentation = () => {
   const [date, setDate] = useState(new Date());
   const [dateTitle, setDateTitle] = useState("");
   const [events, setEvents] = useState<CalendarEvent[]>([]);
 
+
   useEffect(() => {
+    // Set date title
     setDateTitle(formatUkrainianDate(date));
+
+    // Fetch events for the current date
+    fetchEvents();
   }, [date]);
 
   const moveMinusOneDay = () => {
@@ -25,6 +32,31 @@ const day_presentation = () => {
     const nextDate = new Date(date);
     nextDate.setDate(date.getDate() + 1);
     setDate(nextDate);
+  };
+  
+  const fetchEvents = async () => {
+    try {
+      const calendarId = useCalendarStore.getState().calendarId;
+      if (!calendarId) return;
+
+      const startOfDay = new Date(date);
+      startOfDay.setHours(0, 0, 0, 0);
+
+      const endOfDay = new Date(date);
+      endOfDay.setHours(23, 59, 59, 999);
+
+      const response = await api.get<CalendarEvent[]>("/events", {
+        params: {
+          calendar_id: calendarId,
+          start_time: startOfDay.toISOString(),
+          end_time: endOfDay.toISOString(),
+        },
+      });
+
+      setEvents(response.data);
+    } catch (error: any) {
+      console.error("Failed to fetch events:", error?.response?.data || error.message);
+    }
   };
 
   return (
