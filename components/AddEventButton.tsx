@@ -1,8 +1,13 @@
 import React from "react";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import AddPlusIcon from "./icons/AddPlusIcon";
 
-const AddEventButton = () => {
+// props
+interface AddEventButtonProps {
+  onPress: () => void;
+}
+
+const AddEventButton: React.FC<AddEventButtonProps> = ({ onPress }) => {
   return (
     <View
       style={{
@@ -13,7 +18,9 @@ const AddEventButton = () => {
         borderRadius: 15,
       }}
     >
-      <AddPlusIcon />
+      <TouchableOpacity onPress={onPress}>
+        <AddPlusIcon />
+      </TouchableOpacity>
     </View>
   );
 };
