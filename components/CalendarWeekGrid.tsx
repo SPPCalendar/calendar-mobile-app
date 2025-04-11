@@ -29,7 +29,7 @@ const CalendarWeekGrid: React.FC<MonthNameDisplayProps> = ({ style, weekDates, e
 
       <ScrollView
     style={{ borderColor: "#40513B", borderWidth: 0.5 }}
-    contentContainerStyle={{ height: 24 * 64 }}
+    contentContainerStyle={{ height: 24 * 32 + 96 }}
   >
     {/* RELATIVE container allows absolute positioning inside */}
     <View style={{ position: "relative", width: "100%" }}>
@@ -41,7 +41,7 @@ const CalendarWeekGrid: React.FC<MonthNameDisplayProps> = ({ style, weekDates, e
             style={{
               flexDirection: "row",
               width: "100%",
-              height: 64,
+              height: 32,
             }}
             key={hour}
           >
@@ -76,7 +76,7 @@ const CalendarWeekGrid: React.FC<MonthNameDisplayProps> = ({ style, weekDates, e
         const durationInMinutes = end.diff(start, "minute");
 
         const column = start.isoWeekday(); // 1 = Monday, 7 = Sunday
-        const hourOffset = start.hour() * 64 + (start.minute() / 60) * 64;
+        const hourOffset = start.hour() * 32 + (start.minute() / 60) * 32;
 
         return (
           <View
@@ -84,9 +84,9 @@ const CalendarWeekGrid: React.FC<MonthNameDisplayProps> = ({ style, weekDates, e
             style={{
               position: "absolute",
               top: hourOffset,
-              left: `${(column / 7) * 100}%`, // spread evenly across 7 days
-              width: `${100 / 7}%`,
-              height: (durationInMinutes / 60) * 64,
+              left: `${(column / 8) * 100}%`, // spread evenly across 7 days (and 1 column for hours)
+              width: `${100 / 8}%`,
+              height: (durationInMinutes / 60) * 32,
               backgroundColor: event.color || "#ffa",
               borderRadius: 6,
               padding: 4,
