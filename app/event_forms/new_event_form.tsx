@@ -16,6 +16,9 @@ const NewEventForm = () => {
   const [isChecked, setChecked] = useState(false);
   const [notify, enableNotifications] = useState(false);
 
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
   return (
     <View style={{ flex: 1, backgroundColor: Colors.backgroundColor, gap: 24 }}>
       <TextInput
@@ -27,13 +30,18 @@ const NewEventForm = () => {
       />
 
       <View style={[Styles.textInput]}>
-        <CheckboxWithText
+        {/* <CheckboxWithText
           label="Цілий день"
           isChecked={isChecked}
           setChecked={setChecked}
-        />
+        /> */}
 
-        <EventStartEndDatePickers style={{ marginTop: 38 }} />
+        <EventStartEndDatePickers 
+          startDate={startDate}
+          endDate={endDate}
+          onChangeStart={setStartDate}
+          onChangeEnd={setEndDate}
+        />
       </View>
 
       <CategoryEventPicker />
