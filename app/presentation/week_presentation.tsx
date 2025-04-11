@@ -1,19 +1,46 @@
 import CalendarWeekGrid from "@/components/CalendarWeekGrid";
 import TimeUnitNameDisplay from "@/components/TimeUnitNameDisplay";
 import { Colors } from "@/contants/Colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
+import dayjs from "dayjs";
+import isoWeek from "dayjs/plugin/isoWeek";
+
+dayjs.extend(isoWeek);
+
+const getWeekDates = (weekNumber: number) => {
+  const startOfWeek = dayjs().isoWeek(weekNumber).startOf("isoWeek");
+
+  // Generate all 7 days (Mon–Sun)
+  const days: dayjs.Dayjs[] = [];
+  for (let i = 0; i < 7; i++) {
+    days.push(startOfWeek.add(i, "day"));
+  }
+
+  // Log for debug
+  console.log("Week days:", days.map((d) => d.format("YYYY-MM-DD")));
+  
+  return days;
+}
 
 export default function WeekPresentation() {
-  const [weekNumber, setWeekNumber] = useState(20);
+  const initialWeek = dayjs().isoWeek();
 
-  const moveMinusOneWeek = () => {
-    setWeekNumber(weekNumber - 1);
-  };
+  const [weekNumber, setWeekNumber] = useState(initialWeek);
+  const [weekDates, setWeekDates] = useState(() => getWeekDates(initialWeek));
+  
+  useEffect(() => {
+    const startOfWeek = dayjs().isoWeek(weekNumber).startOf("isoWeek");
+    const endOfWeek = dayjs().isoWeek(weekNumber).endOf("isoWeek");
 
-  const movePlusOneWeek = () => {
-    setWeekNumber(weekNumber + 1);
-  };
+    setWeekDates(getWeekDates(weekNumber))
+
+    //   const events = await fetchEvents(calendarId, startOfWeek.toDate(), endOfWeek.toDate());
+    //   setEvents(events);
+  }, [weekNumber]);
+
+  const moveMinusOneWeek = () => setWeekNumber((prev) => prev - 1);
+  const movePlusOneWeek = () => setWeekNumber((prev) => prev + 1);
 
   return (
     <View
@@ -31,7 +58,7 @@ export default function WeekPresentation() {
         onPressRightArrow={movePlusOneWeek}
       />
 
-      <CalendarWeekGrid style={{ marginTop: 30 }} />
+      <CalendarWeekGrid style={{ marginTop: 30 }} weekDates={weekDates} />
     </View>
   );
 }

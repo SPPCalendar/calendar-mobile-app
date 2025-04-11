@@ -1,11 +1,13 @@
+import dayjs from "dayjs";
 import React from "react";
 import { View, Text, StyleProp, ViewStyle, ScrollView } from "react-native";
 
 interface MonthNameDisplayProps {
   style?: StyleProp<ViewStyle>;
+  weekDates: dayjs.Dayjs[];
 }
 
-const CalendarWeekGrid: React.FC<MonthNameDisplayProps> = ({ style }) => {
+const CalendarWeekGrid: React.FC<MonthNameDisplayProps> = ({ style, weekDates }) => {
   const weekDaysFirstLetters = ["", "П", "В", "С", "Ч", "П", "С", "Н"];
 
   return (
@@ -16,8 +18,8 @@ const CalendarWeekGrid: React.FC<MonthNameDisplayProps> = ({ style }) => {
             <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 20 }}>
               {letter}
             </Text>
-            <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 20 }}>
-              {index == 0 ? "" : index}
+            <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 15 }}>
+              {index == 0 ? "" : weekDates[index-1].date()}
             </Text>
           </View>
         ))}
