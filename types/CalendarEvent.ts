@@ -1,15 +1,11 @@
 export type CalendarEvent = {
     id: number;
     event_name: string;
-    start_time: string; // You can convert to Date if needed
+    start_time: string;
     end_time: string;
     color: string;
     calendar_id: number;
     category_id: number | null;
-    calendar: {
-      id: number;
-      calendar_name: string;
-      color: string;
-    };
-    category: any | null; // Define if needed later
+    category: any | null;
+    calendar: any | null;
   };
