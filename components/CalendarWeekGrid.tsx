@@ -1,3 +1,4 @@
+import { Styles } from "@/contants/Styles";
 import { CalendarEvent } from "@/types/CalendarEvent";
 import dayjs from "dayjs";
 import React from "react";
@@ -93,7 +94,7 @@ const CalendarWeekGrid: React.FC<MonthNameDisplayProps> = ({ style, weekDates, e
               zIndex: 5,
             }}
           >
-            <Text style={{ fontSize: 10, fontWeight: "600" }}>
+            <Text style={[Styles.textInputText, { fontSize: 10, fontFamily: "Montserrat_400Bold" }]}>
               {event.event_name}
             </Text>
           </View>
