@@ -1,10 +1,15 @@
 import { Colors } from "@/contants/Colors";
 import { Styles } from "@/contants/Styles";
 import React, { useState } from "react";
-import { TextInput, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import EventStartEndDatePickers from "@/components/EventStartEndDatePickers";
 import CheckboxWithText from "@/components/CheckboxWithText";
 import CategoryEventPicker from "@/components/CategoryEventPicker";
+
+const handleCreateEvent = () => {
+  // Handle event creation logic here
+  console.log("Event created!");
+}
 
 const NewEventForm = () => {
   const [text, onChangeText] = useState("");
@@ -39,6 +44,18 @@ const NewEventForm = () => {
         isChecked={notify}
         setChecked={enableNotifications}
       />
+
+      <TouchableOpacity
+        style={{
+          backgroundColor: Colors.formTopBarBg,
+          paddingVertical: 16,
+          borderRadius: 30,
+          alignItems: "center",
+        }}
+        onPress={handleCreateEvent}
+      >
+        <Text style={[Styles.textInputText, {color: "#fff"}]}>Створити подію</Text>
+      </TouchableOpacity>
     </View>
   );
 };
