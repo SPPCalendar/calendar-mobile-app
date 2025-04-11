@@ -5,11 +5,13 @@ import React, { useState } from "react";
 import { TextInput, Text, View, TouchableOpacity } from "react-native";
 import api from "@/utils/api";
 import { useAuthStore } from "@/stores/auth_store";
+import { useCalendarStore } from "@/stores/calendar_store";
 
-const LogoutForm = () => {
+const Profile = () => {
   const router = useRouter();
   const handleLogout = async () => {
     useAuthStore.getState().logout();
+    useCalendarStore.getState().clearCalendarId();
     router.replace("/" as Href);
   };
 
@@ -30,4 +32,4 @@ const LogoutForm = () => {
   );
 };
 
-export default LogoutForm;
+export default Profile;

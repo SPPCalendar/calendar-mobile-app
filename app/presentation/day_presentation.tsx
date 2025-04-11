@@ -12,7 +12,7 @@ const day_presentation = () => {
   const [date, setDate] = useState(new Date());
   const [dateTitle, setDateTitle] = useState("");
   const [events, setEvents] = useState<CalendarEvent[]>([]);
-
+  const calendarId = useCalendarStore((state) => state.calendarId);
 
   useEffect(() => {
     // Set date title
@@ -20,7 +20,7 @@ const day_presentation = () => {
 
     // Fetch events for the current date
     fetchEvents();
-  }, [date]);
+  }, [date, calendarId]);
 
   const moveMinusOneDay = () => {
     const previousDate = new Date(date);
@@ -36,8 +36,11 @@ const day_presentation = () => {
   
   const fetchEvents = async () => {
     try {
-      const calendarId = useCalendarStore.getState().calendarId;
-      if (!calendarId) return;
+      
+      if (!calendarId) {
+        setEvents([]);
+        return;
+      }
 
       const startOfDay = new Date(date);
       startOfDay.setHours(0, 0, 0, 0);
