@@ -28,7 +28,7 @@ const FormTopBar: React.FC<FormTopBarProps> = ({title}) => {
           alignItems: "center",
         }}
       >
-        <ArrowLeftMdIcon />
+        {/* <ArrowLeftMdIcon /> */}
       </View>
       <Text
         style={{
@@ -48,7 +48,7 @@ const FormTopBar: React.FC<FormTopBarProps> = ({title}) => {
           alignItems: "center",
         }}
       >
-        <CheckBigIcon />
+        {/* <CheckBigIcon /> */}
       </View>
     </View>
   );
