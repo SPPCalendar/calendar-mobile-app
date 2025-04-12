@@ -5,59 +5,36 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
-import { fetchEvents } from "@/utils/eventApi";
+import { fetchEvents, fetchWeekEvents } from "@/utils/eventApi";
 import { useCalendarStore } from "@/stores/calendar_store";
 import { CalendarEvent } from "@/types/CalendarEvent";
+import { getWeekDates } from "@/utils/utils";
 
 dayjs.extend(isoWeek);
 
-const getWeekDates = (weekNumber: number) => {
-  const startOfWeek = dayjs().isoWeek(weekNumber).startOf("isoWeek");
 
-  // Generate all 7 days (Mon–Sun)
-  const days: dayjs.Dayjs[] = [];
-  for (let i = 0; i < 7; i++) {
-    days.push(startOfWeek.add(i, "day"));
-  }
-
-  return days;
-}
 
 export default function WeekPresentation() {
   const initialWeek = dayjs().isoWeek();
 
   const [weekNumber, setWeekNumber] = useState(initialWeek);
-  const [weekDates, setWeekDates] = useState(() => getWeekDates(initialWeek));
+  const [weekDates, setWeekDates] = useState(() => getWeekDates(initialWeek, 2025));
 
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const calendarId = useCalendarStore((state) => state.calendarId); // pull the calendarId
   
-  useEffect(() => {
-    const fetchWeekEvents = async () => {
-      if (!calendarId) {
-        setEvents([]);
-        return;
-      }
-  
-      const startOfWeek = dayjs().isoWeek(weekNumber).startOf("isoWeek");
-      const endOfWeek = dayjs().isoWeek(weekNumber).endOf("isoWeek");
-  
-      setWeekDates(getWeekDates(weekNumber));
-  
-      try {
-        const events = await fetchEvents(calendarId, startOfWeek.toDate(), endOfWeek.toDate());
-        setEvents(events);
-      } catch (err) {
-        console.error("Failed to fetch weekly events:", err);
-        setEvents([]);
-      }
-    };
-  
-    fetchWeekEvents();
-  }, [weekNumber, calendarId]);
-
   const moveMinusOneWeek = () => setWeekNumber((prev) => prev - 1);
   const movePlusOneWeek = () => setWeekNumber((prev) => prev + 1);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetched = await fetchWeekEvents(weekNumber, 2025, calendarId);   // TODO: calculate year based on weekNumber
+      setWeekDates(getWeekDates(weekNumber, 2025));
+      setEvents(fetched);
+    }
+
+    fetchData();
+  }, [weekNumber, calendarId]);
 
   return (
     <View
@@ -70,7 +47,7 @@ export default function WeekPresentation() {
     >
       <TimeUnitNameDisplay
         style={{ marginTop: 20 }}
-        monthName={`Травень (${weekNumber} тиждень)`}
+        monthName={`${weekNumber} тиждень`}
         onPressLeftArrow={moveMinusOneWeek}
         onPressRightArrow={movePlusOneWeek}
       />

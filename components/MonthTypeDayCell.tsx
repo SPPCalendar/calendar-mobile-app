@@ -1,8 +1,18 @@
 import React from "react";
 import { Text, View } from "react-native";
 import MoreHorizontalIcon from "./icons/MoreHorizontalIcon";
+import { CalendarEvent } from "@/types/CalendarEvent";
+import dayjs from "dayjs";
 
-const MonthTypeDayCell = () => {
+interface Props {
+  date: dayjs.Dayjs
+  events: CalendarEvent[];
+}
+
+const MonthTypeDayCell: React.FC<Props> = ({
+  date,
+  events
+}) => {
   const x: string[] = ["1s", "2s", "3s", "4s", "5s"];
 
   return (
@@ -15,7 +25,7 @@ const MonthTypeDayCell = () => {
           textAlign: "center",
         }}
       >
-        5
+        {date.date()}
       </Text>
 
       <View style={{ marginTop: 2, gap: 1 }}>
@@ -24,12 +34,12 @@ const MonthTypeDayCell = () => {
             style={{
               paddingBlock: 3,
               paddingInline: 2,
-              // backgroundColor: "#FFFFFF",
+              backgroundColor: events[0]?.color || "transparent",
             }}
             key={index}
           >
             <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 12 }}>
-              {/* Зустріч */}
+              {events[0]?.event_name}
             </Text>
           </View>
         ))}

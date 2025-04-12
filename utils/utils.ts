@@ -1,5 +1,13 @@
 // import { Month } from "@/enums/Month";
 
+import dayjs from "dayjs";
+
+import isoWeeksInYear from "dayjs/plugin/isoWeeksInYear"
+import isLeapYear from "dayjs/plugin/isLeapYear"
+
+dayjs.extend(isoWeeksInYear)
+dayjs.extend(isLeapYear)
+
 export enum Month {
   January = 1,
   February,
@@ -15,72 +23,56 @@ export enum Month {
   December,
 }
 
-type MonthNumbers = {
-  lastMonth: number[];
-  thisMonth: number[][];
-  nextMonth: number[];
-};
+export const getMonthStartEndWeeks = (
+  month: Month, // 1-indexed
+  year: number
+) => {
+  const dayjsMonth = dayjs().year(year).month(month - 1)  // month - 1 because dayjs is 0 indexed
+  
+  const startOfMonth = dayjsMonth.startOf("month");
+  const endOfMonth = dayjsMonth.endOf("month");
 
-const getMonthNumbers = (month: Month, year: number) => {
-  const result: MonthNumbers = { lastMonth: [], thisMonth: [], nextMonth: [] };
-  const firstDay = new Date(year, month - 1, 1);
-  const lastDay = new Date(year, month, 0);
+  let startWeekNumber = startOfMonth.isoWeek();
+  let endWeekNumber = endOfMonth.isoWeek();
 
-  const currentDateLastMonth = new Date(firstDay);
+  return {startWeekNumber, endWeekNumber}
+}
 
-  if (firstDay.getDay() != 1) {
-    currentDateLastMonth.setDate(currentDateLastMonth.getDate() - 1);
-    result.lastMonth.push(currentDateLastMonth.getDate());
+export const getWeekDates = (weekNumber: number, year: number) => {
+  const startOfWeek = dayjs().year(year).isoWeek(weekNumber).startOf("isoWeek");
 
-    while (currentDateLastMonth.getDay() != 1) {
-      currentDateLastMonth.setDate(currentDateLastMonth.getDate() - 1);
-      result.lastMonth.push(currentDateLastMonth.getDate());
-    }
-  }
-  result.lastMonth.sort();
-
-  const currentDateThisMonth = new Date(firstDay);
-
-  if (firstDay.getDay() != 7) {
-    const firstWeek = [];
-    firstWeek.push(firstDay.getDate());
-
-    while (currentDateThisMonth.getDay() != 6) {
-      currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
-      firstWeek.push(currentDateThisMonth.getDate());
-    }
-    currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
-    firstWeek.push(currentDateThisMonth.getDate());
-    result.thisMonth.push(firstWeek);
+  // Generate all 7 days (Mon–Sun)
+  const days: dayjs.Dayjs[] = [];
+  for (let i = 0; i < 7; i++) {
+    days.push(startOfWeek.add(i, "day"));
   }
 
-  for (let i = 0; i < 4; i++) {
-    const currentWeek = [];
-    while (currentDateThisMonth.getDay() != 6) {
-      currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
-      currentWeek.push(currentDateThisMonth.getDate());
-    }
-    currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
-    currentWeek.push(currentDateThisMonth.getDate());
-    result.thisMonth.push(currentWeek);
+  return days;
+}
+
+export const getMonthDates = (month: Month, year: number): dayjs.Dayjs[][] => {
+  const { startWeekNumber, endWeekNumber } = getMonthStartEndWeeks(month, year);
+
+  const weeks: dayjs.Dayjs[][] = [];
+
+  const totalWeeksThisYear = dayjs().year(year).isoWeeksInYear();
+  const crossingToNextYear = endWeekNumber === 1 && month === Month.December;
+
+  const finalWeek = crossingToNextYear ? totalWeeksThisYear : endWeekNumber;
+
+  // Weeks of current year
+  for (let week = startWeekNumber; week <= finalWeek; week++) {
+    const weekDays = getWeekDates(week, year);
+    weeks.push(weekDays);
   }
 
-  const lastWeek = [];
-  while (lastDay.getTime() != currentDateThisMonth.getTime()) {
-    currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
-    lastWeek.push(currentDateThisMonth.getDate());
-  }
-  result.thisMonth.push(lastWeek);
-
-  const left = 7 - lastWeek.length;
-
-  for (let i = 1; i < left + 1; i++) {
-    result.nextMonth.push(i);
+  // Week 1 of next year
+  if (crossingToNextYear) {
+    const firstWeekNextYear = getWeekDates(1, year + 1);
+    weeks.push(firstWeekNextYear);
   }
 
-  console.log(result.lastMonth);
-  console.log(result.thisMonth);
-  console.log(result.nextMonth);
+  return weeks;
 };
 
 // getMonthNumbers(Month.March, 2025);
