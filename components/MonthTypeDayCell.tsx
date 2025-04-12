@@ -1,55 +1,69 @@
 import React from "react";
 import { Text, View } from "react-native";
-import MoreHorizontalIcon from "./icons/MoreHorizontalIcon";
+import { CalendarEvent } from "@/types/CalendarEvent";
+import dayjs from "dayjs";
 
 interface Props {
-  date: number;
-  isActive: boolean;
+  date: dayjs.Dayjs;
+  events: CalendarEvent[];
 }
 
-const MonthTypeDayCell: React.FC<Props> = ({ date, isActive }) => {
-  const x: string[] = ["1s", "2s", "3s", "4s", "5s"];
+const MonthTypeDayCell: React.FC<Props> = ({ date, events }) => {
+  const MIN_ROWS = 4;
+  const placeholderCount = Math.max(0, MIN_ROWS - events.length);
 
   return (
-    <View style={{}}>
+    <View style={{ padding: 2 }}>
       <Text
         style={{
           height: 13,
           fontFamily: "Montserrat_400Regular",
           fontSize: 12,
           textAlign: "center",
-          color: isActive ? "#000000" : "#626262",
+          color: "#000000",
         }}
       >
-        {date}
+        {date.date()}
       </Text>
 
       <View style={{ marginTop: 2, gap: 1 }}>
-        {x.map((y, index) => (
+        {events.map((event) => (
           <View
+            key={event.id}
             style={{
-              paddingBlock: 3,
-              paddingInline: 2,
-              // backgroundColor: "#FFFFFF",
+              paddingVertical: 3,
+              paddingHorizontal: 1,
+              backgroundColor: event.color,
+              borderRadius: 4,
             }}
-            key={index}
           >
-            <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 12 }}>
-              {/* Зустріч */}
+            <Text
+              style={{
+                fontFamily: "Montserrat_400Regular",
+                fontSize: 12,
+                color: "#fff",
+              }}
+            >
+              {event.event_name}
             </Text>
           </View>
         ))}
-      </View>
 
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: 2,
-          paddingBottom: 1,
-        }}
-      >
-        {/* <MoreHorizontalIcon /> */}
+        {/* Add invisible placeholders to preserve layout */}
+        {Array(placeholderCount)
+          .fill(null)
+          .map((_, index) => (
+            <View
+              key={`placeholder-${index}`}
+              style={{
+                paddingVertical: 3,
+                paddingHorizontal: 1,
+                opacity: 0, // invisible, still takes up space
+              }}
+            >
+              <Text style={{ fontSize: 12 }}>placeholder</Text>
+            </View>
+          ))}
       </View>
     </View>
   );

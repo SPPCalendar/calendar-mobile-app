@@ -1,31 +1,31 @@
 import React from "react";
 import { ScrollView, StyleProp, View, ViewStyle } from "react-native";
 import SevenDaysRow from "./SevenDaysRow";
-import { Month } from "@/types/Month";
-import { getMonthNumbers } from "@/utils/utils";
+import dayjs from "dayjs";
+import { CalendarEvent } from "@/types/CalendarEvent";
 
 interface MonthNameDisplayProps {
   style?: StyleProp<ViewStyle>;
+  monthDatesSplitByWeeks: dayjs.Dayjs[][];
+  eventsSplitByWeeks: CalendarEvent[][];
 }
 
-const CalendarMonthGrid: React.FC<MonthNameDisplayProps> = ({ style }) => {
-  const numbers = getMonthNumbers(Month.March, 2025);
-
+const CalendarMonthGrid: React.FC<MonthNameDisplayProps> = ({
+  style,
+  monthDatesSplitByWeeks,
+  eventsSplitByWeeks,
+}) => {
   return (
     <ScrollView style={[{ width: "100%" }, style]}>
-      <SevenDaysRow
-        dates={numbers.thisMonth[0]}
-        anotherMonthDates={numbers.lastMonth}
-        anotherMonthIsNext={false}
-      />
-      {numbers.thisMonth.slice(1, -1).map((dates, index) => (
-        <SevenDaysRow dates={dates} key={index} />
-      ))}
-      <SevenDaysRow
-        dates={numbers.thisMonth[numbers.thisMonth.length - 1]}
-        anotherMonthDates={numbers.nextMonth}
-        anotherMonthIsNext={true}
-      />
+      {Array(monthDatesSplitByWeeks.length)
+        .fill(null)
+        .map((num, index) => (
+          <SevenDaysRow
+            key={index}
+            weekDates={monthDatesSplitByWeeks[index] ?? []}
+            events={eventsSplitByWeeks[index] ?? []}
+          />
+        ))}
     </ScrollView>
   );
 };

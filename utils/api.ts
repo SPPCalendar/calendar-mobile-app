@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/auth_store";
 
-const API_BASE_URL = "http://10.0.2.2:4000/api";
+const API_BASE_URL = "https://calendar-backend-0iw7.onrender.com/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,

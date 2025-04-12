@@ -32,7 +32,7 @@ const FormTopBar: React.FC<FormTopBarProps> = ({ title }) => {
         }}
         onPress={() => router.back()}
       >
-        <ArrowLeftMdIcon />
+        {/* <ArrowLeftMdIcon /> */}
       </TouchableOpacity>
       <Text
         style={{
@@ -52,7 +52,7 @@ const FormTopBar: React.FC<FormTopBarProps> = ({ title }) => {
           alignItems: "center",
         }}
       >
-        <CheckBigIcon />
+        {/* <CheckBigIcon /> */}
       </View>
     </View>
   );

@@ -1,6 +1,6 @@
 import { Colors } from "@/contants/Colors";
 import { Styles } from "@/contants/Styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import EventStartEndDatePickers from "@/components/EventStartEndDatePickers";
 import CheckboxWithText from "@/components/CheckboxWithText";
@@ -9,6 +9,7 @@ import { useCalendarStore } from "@/stores/calendar_store";
 import { CalendarEvent } from "@/types/CalendarEvent";
 import api from "@/utils/api";
 import { router } from "expo-router";
+import dayjs from "dayjs";
 
 
 const NewEventForm = () => {
@@ -20,6 +21,24 @@ const NewEventForm = () => {
   const [endDate, setEndDate] = useState(new Date());
 
   const calendarId = useCalendarStore((state) => state.calendarId);
+
+  useEffect(() => {
+    if (!dayjs(startDate).isSame(endDate, "day")) {
+      // Update endDate's date to match startDate, keep its time
+      const updated = new Date(startDate);
+      updated.setHours(endDate.getHours(), endDate.getMinutes(), endDate.getSeconds(), endDate.getMilliseconds());
+      setEndDate(updated);
+    }
+  }, [startDate]);
+  
+  useEffect(() => {
+    if (!dayjs(startDate).isSame(endDate, "day")) {
+      // Update startDate's date to match endDate, keep its time
+      const updated = new Date(endDate);
+      updated.setHours(startDate.getHours(), startDate.getMinutes(), startDate.getSeconds(), startDate.getMilliseconds());
+      setStartDate(updated);
+    }
+  }, [endDate]);
   
   const handleCreateEvent = async () => {
     if (!calendarId) {

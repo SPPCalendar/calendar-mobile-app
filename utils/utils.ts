@@ -1,79 +1,83 @@
-// import { Month } from "@/types/Month";
+// import { Month } from "@/enums/Month";
 
-export type MonthNumbers = {
-  lastMonth: number[];
-  thisMonth: number[][];
-  nextMonth: number[];
+import dayjs from "dayjs";
+
+import isoWeeksInYear from "dayjs/plugin/isoWeeksInYear";
+import isLeapYear from "dayjs/plugin/isLeapYear";
+
+dayjs.extend(isoWeeksInYear);
+dayjs.extend(isLeapYear);
+
+export enum Month {
+  January = 1,
+  February,
+  March,
+  April,
+  May,
+  June,
+  July,
+  August,
+  September,
+  October,
+  November,
+  December,
+}
+
+export const getMonthStartEndWeeks = (
+  month: Month, // 1-indexed
+  year: number
+) => {
+  const dayjsMonth = dayjs()
+    .year(year)
+    .month(month - 1); // month - 1 because dayjs is 0 indexed
+
+  const startOfMonth = dayjsMonth.startOf("month");
+  const endOfMonth = dayjsMonth.endOf("month");
+
+  let startWeekNumber = startOfMonth.isoWeek();
+  let endWeekNumber = endOfMonth.isoWeek();
+
+  return { startWeekNumber, endWeekNumber };
 };
 
-export const getMonthNumbers = (month: Month, year: number): MonthNumbers => {
-  const result: MonthNumbers = { lastMonth: [], thisMonth: [], nextMonth: [] };
-  const firstDay = new Date(year, month - 1, 1);
-  const lastDay = new Date(year, month, 0);
+export const getWeekDates = (weekNumber: number, year: number) => {
+  const startOfWeek = dayjs().year(year).isoWeek(weekNumber).startOf("isoWeek");
 
-  const currentDateLastMonth = new Date(firstDay);
-
-  if (firstDay.getDay() != 1) {
-    currentDateLastMonth.setDate(currentDateLastMonth.getDate() - 1);
-    result.lastMonth.push(currentDateLastMonth.getDate());
-
-    while (currentDateLastMonth.getDay() != 1) {
-      currentDateLastMonth.setDate(currentDateLastMonth.getDate() - 1);
-      result.lastMonth.push(currentDateLastMonth.getDate());
-    }
-  }
-  result.lastMonth.sort();
-  console.log("we have done last month");
-
-  const currentDateThisMonth = new Date(firstDay);
-
-  if (firstDay.getDay() != 1) {
-    const firstWeek = [];
-    firstWeek.push(firstDay.getDate());
-
-    while (currentDateThisMonth.getDay() != 1) {
-      currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
-      firstWeek.push(currentDateThisMonth.getDate());
-    }
-    // currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
-    // firstWeek.push(currentDateThisMonth.getDate());
-    result.thisMonth.push(firstWeek);
-  }
-  console.log("we have done this month");
-
-  for (let i = 0; i < 4; i++) {
-    const currentWeek = [];
-    while (currentDateThisMonth.getDay() != 0) {
-      currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
-      currentWeek.push(currentDateThisMonth.getDate());
-    }
-    currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
-    currentWeek.push(currentDateThisMonth.getDate());
-    result.thisMonth.push(currentWeek);
-  }
-  console.log("we have done next month");
-
-  const lastWeek = [];
-  while (lastDay.getTime() != currentDateThisMonth.getTime()) {
-    console.log(
-      formatUkrainianDate(lastDay) +
-        " and " +
-        formatUkrainianDate(currentDateThisMonth)
-    );
-
-    currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
-    lastWeek.push(currentDateThisMonth.getDate());
-  }
-  result.thisMonth.push(lastWeek);
-
-  const left = 7 - lastWeek.length;
-
-  for (let i = 1; i < left + 1; i++) {
-    result.nextMonth.push(i);
+  // Generate all 7 days (Mon–Sun)
+  const days: dayjs.Dayjs[] = [];
+  for (let i = 0; i < 7; i++) {
+    days.push(startOfWeek.add(i, "day"));
   }
 
-  return result;
+  return days;
 };
+
+export const getMonthDates = (month: Month, year: number): dayjs.Dayjs[][] => {
+  const { startWeekNumber, endWeekNumber } = getMonthStartEndWeeks(month, year);
+
+  const weeks: dayjs.Dayjs[][] = [];
+
+  const totalWeeksThisYear = dayjs().year(year).isoWeeksInYear();
+  const crossingToNextYear = endWeekNumber === 1 && month === Month.December;
+
+  const finalWeek = crossingToNextYear ? totalWeeksThisYear : endWeekNumber;
+
+  // Weeks of current year
+  for (let week = startWeekNumber; week <= finalWeek; week++) {
+    const weekDays = getWeekDates(week, year);
+    weeks.push(weekDays);
+  }
+
+  // Week 1 of next year
+  if (crossingToNextYear) {
+    const firstWeekNextYear = getWeekDates(1, year + 1);
+    weeks.push(firstWeekNextYear);
+  }
+
+  return weeks;
+};
+
+// getMonthNumbers(Month.March, 2025);
 
 export const formatUkrainianDate = (date: Date): string => {
   const monthFormatter = new Intl.DateTimeFormat("uk-UA", { month: "long" });
@@ -97,20 +101,3 @@ export const getUkrainianMonthName = (monthIndex: number): string => {
   const formatter = new Intl.DateTimeFormat("uk-UA", { month: "long" });
   return capitalize(formatter.format(date));
 };
-
-export enum Month {
-  January = 1,
-  February,
-  March,
-  April,
-  May,
-  June,
-  July,
-  August,
-  September,
-  October,
-  November,
-  December,
-}
-
-console.log(getMonthNumbers(Month.April, 2025));

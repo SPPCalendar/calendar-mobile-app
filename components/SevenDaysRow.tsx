@@ -1,31 +1,33 @@
 import React from "react";
 import { View } from "react-native";
 import MonthTypeDayCell from "./MonthTypeDayCell";
+import { CalendarEvent } from "@/types/CalendarEvent";
+import dayjs from "dayjs";
 
 interface Props {
-  dates: number[];
-  anotherMonthDates?: number[];
-  anotherMonthIsNext?: boolean;
+  weekDates: dayjs.Dayjs[];
+  events: CalendarEvent[];
 }
 
-const SevenDaysRow: React.FC<Props> = ({
-  dates,
-  anotherMonthDates,
-  anotherMonthIsNext,
-}) => {
+const SevenDaysRow: React.FC<Props> = ({ weekDates, events }) => {
+  const eventsPerDay: CalendarEvent[][] = weekDates.map((date) =>
+    events.filter((event) => dayjs(event.start_time).isSame(date, "day"))
+  );
+
   return (
-    <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-      {anotherMonthIsNext === false &&
-        anotherMonthDates?.map((date, index) => (
-          <MonthTypeDayCell date={date} isActive={false} key={index} />
-        ))}
-      {dates.map((date, index) => (
-        <MonthTypeDayCell date={date} isActive={true} key={index} />
+    <View style={{ flexDirection: "row" }}>
+      {weekDates.map((date, index) => (
+        <View
+          key={index}
+          style={{
+            width: `${100 / 7}%`, // ~14.285%
+            borderWidth: 0.5,
+            borderColor: "#eee", // optional: light border between cells
+          }}
+        >
+          <MonthTypeDayCell date={date} events={eventsPerDay[index]} />
+        </View>
       ))}
-      {anotherMonthIsNext === true &&
-        anotherMonthDates?.map((date, index) => (
-          <MonthTypeDayCell date={date} isActive={false} key={index} />
-        ))}
     </View>
   );
 };
