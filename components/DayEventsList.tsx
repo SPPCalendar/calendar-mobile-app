@@ -12,11 +12,7 @@ const DayEventsList: React.FC<MonthNameDisplayProps> = ({ events, style }) => {
   return (
     <ScrollView style={[{ width: "100%" }, style]}>
       {events.map((event) => (
-        <EventRow
-          key={event.id}
-          eventName={event.event_name}
-          eventDuration="Цілий день"
-        />
+        <EventRow key={event.id} event={event} />
       ))}
     </ScrollView>
   );

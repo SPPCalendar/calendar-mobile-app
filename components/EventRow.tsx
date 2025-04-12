@@ -1,17 +1,26 @@
+import { CalendarEvent } from "@/types/CalendarEvent";
+import { useRouter } from "expo-router";
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 
 interface MonthNameDisplayProps {
-  eventName: string;
-  eventDuration: string;
+  event: CalendarEvent;
 }
 
-const EventRow: React.FC<MonthNameDisplayProps> = ({
-  eventName,
-  eventDuration,
-}) => {
+const EventRow: React.FC<MonthNameDisplayProps> = ({ event }) => {
+  const router = useRouter();
+
+  const openEventDetails = () => {
+    router.push({
+      pathname: "/presentation/event_details",
+      params: {
+        event: JSON.stringify(event),
+      },
+    });
+  };
+
   return (
-    <View
+    <TouchableOpacity
       style={{
         flexDirection: "row",
         width: "100%",
@@ -22,6 +31,7 @@ const EventRow: React.FC<MonthNameDisplayProps> = ({
         height: 62,
         marginBottom: 8,
       }}
+      onPress={openEventDetails}
     >
       <View
         style={{
@@ -37,13 +47,13 @@ const EventRow: React.FC<MonthNameDisplayProps> = ({
         style={{ flexDirection: "column", gap: 8, justifyContent: "center" }}
       >
         <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 18 }}>
-          {eventName}
+          {event.event_name}
         </Text>
         <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 16 }}>
-          {eventDuration}
+          {"Цілий день"}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
