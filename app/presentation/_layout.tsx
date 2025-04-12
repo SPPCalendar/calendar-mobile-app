@@ -22,7 +22,6 @@ export default function RootLayout() {
       <TopBar />
       <Stack screenOptions={{ headerShown: false }} />
       <AddEventButton onPress={handleAddEventButtonPress} />
-      
     </SafeAreaView>
   );
 }

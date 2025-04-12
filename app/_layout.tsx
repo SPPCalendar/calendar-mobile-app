@@ -24,7 +24,14 @@ export default function RootLayout() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backgroundColor }}>
       <View style={{ flex: 1, marginInline: 20, opacity: opacity }}>
-        <Stack screenOptions={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen
+            name="choose_calendar_modal"
+            options={{
+              presentation: "modal",
+            }}
+          />
+        </Stack>
       </View>
       <CalendarPresentationPickerModal />
     </SafeAreaView>

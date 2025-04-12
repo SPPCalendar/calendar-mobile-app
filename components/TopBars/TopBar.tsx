@@ -12,7 +12,6 @@ import { useModalStore } from "@/stores/modal_store";
 import { useAuthStore } from "@/stores/auth_store";
 import { Href, useRouter } from "expo-router";
 
-
 export default function TopBar() {
   const router = useRouter();
   const makeDimmed = useOpacityStore((state) => state.makeDimmed);
@@ -22,7 +21,7 @@ export default function TopBar() {
     makeDimmed();
     changeModalShown(true);
   };
-  
+
   const accessToken = useAuthStore((state) => state.accessToken);
   const openUserProfileOrLogin = () => {
     if (accessToken) {
@@ -50,7 +49,10 @@ export default function TopBar() {
       <SearchIcon />
       <View style={{ flexDirection: "row", gap: 12 }}>
         <FilterIcon />
-        <CalendarDaysIcon />
+
+        <TouchableOpacity onPress={() => router.push("/choose_calendar_modal")}>
+          <CalendarDaysIcon />
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => openCalendarPresentationPicker()}>
           <MoreGridBigIcon />
