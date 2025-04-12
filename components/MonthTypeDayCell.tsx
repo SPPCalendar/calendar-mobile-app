@@ -2,7 +2,12 @@ import React from "react";
 import { Text, View } from "react-native";
 import MoreHorizontalIcon from "./icons/MoreHorizontalIcon";
 
-const MonthTypeDayCell = () => {
+interface Props {
+  date: number;
+  isActive: boolean;
+}
+
+const MonthTypeDayCell: React.FC<Props> = ({ date, isActive }) => {
   const x: string[] = ["1s", "2s", "3s", "4s", "5s"];
 
   return (
@@ -13,9 +18,10 @@ const MonthTypeDayCell = () => {
           fontFamily: "Montserrat_400Regular",
           fontSize: 12,
           textAlign: "center",
+          color: isActive ? "#000000" : "#626262",
         }}
       >
-        5
+        {date}
       </Text>
 
       <View style={{ marginTop: 2, gap: 1 }}>

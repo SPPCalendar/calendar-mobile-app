@@ -2,7 +2,8 @@ import CalendarMonthGrid from "@/components/CalendarMonthGrid";
 import TimeUnitNameDisplay from "@/components/TimeUnitNameDisplay";
 import WeekDaysDisplay from "@/components/WeekDaysDisplay";
 import { Colors } from "@/contants/Colors";
-import { getUkrainianMonthName, Month } from "@/utils/utils";
+import { Month } from "@/types/Month";
+import { getUkrainianMonthName } from "@/utils/utils";
 import { useState } from "react";
 import { View } from "react-native";
 

@@ -1,27 +1,12 @@
-// import { Month } from "@/enums/Month";
+// import { Month } from "@/types/Month";
 
-export enum Month {
-  January = 1,
-  February,
-  March,
-  April,
-  May,
-  June,
-  July,
-  August,
-  September,
-  October,
-  November,
-  December,
-}
-
-type MonthNumbers = {
+export type MonthNumbers = {
   lastMonth: number[];
   thisMonth: number[][];
   nextMonth: number[];
 };
 
-const getMonthNumbers = (month: Month, year: number) => {
+export const getMonthNumbers = (month: Month, year: number): MonthNumbers => {
   const result: MonthNumbers = { lastMonth: [], thisMonth: [], nextMonth: [] };
   const firstDay = new Date(year, month - 1, 1);
   const lastDay = new Date(year, month, 0);
@@ -38,25 +23,27 @@ const getMonthNumbers = (month: Month, year: number) => {
     }
   }
   result.lastMonth.sort();
+  console.log("we have done last month");
 
   const currentDateThisMonth = new Date(firstDay);
 
-  if (firstDay.getDay() != 7) {
+  if (firstDay.getDay() != 1) {
     const firstWeek = [];
     firstWeek.push(firstDay.getDate());
 
-    while (currentDateThisMonth.getDay() != 6) {
+    while (currentDateThisMonth.getDay() != 1) {
       currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
       firstWeek.push(currentDateThisMonth.getDate());
     }
-    currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
-    firstWeek.push(currentDateThisMonth.getDate());
+    // currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
+    // firstWeek.push(currentDateThisMonth.getDate());
     result.thisMonth.push(firstWeek);
   }
+  console.log("we have done this month");
 
   for (let i = 0; i < 4; i++) {
     const currentWeek = [];
-    while (currentDateThisMonth.getDay() != 6) {
+    while (currentDateThisMonth.getDay() != 0) {
       currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
       currentWeek.push(currentDateThisMonth.getDate());
     }
@@ -64,9 +51,16 @@ const getMonthNumbers = (month: Month, year: number) => {
     currentWeek.push(currentDateThisMonth.getDate());
     result.thisMonth.push(currentWeek);
   }
+  console.log("we have done next month");
 
   const lastWeek = [];
   while (lastDay.getTime() != currentDateThisMonth.getTime()) {
+    console.log(
+      formatUkrainianDate(lastDay) +
+        " and " +
+        formatUkrainianDate(currentDateThisMonth)
+    );
+
     currentDateThisMonth.setDate(currentDateThisMonth.getDate() + 1);
     lastWeek.push(currentDateThisMonth.getDate());
   }
@@ -78,12 +72,8 @@ const getMonthNumbers = (month: Month, year: number) => {
     result.nextMonth.push(i);
   }
 
-  console.log(result.lastMonth);
-  console.log(result.thisMonth);
-  console.log(result.nextMonth);
+  return result;
 };
-
-// getMonthNumbers(Month.March, 2025);
 
 export const formatUkrainianDate = (date: Date): string => {
   const monthFormatter = new Intl.DateTimeFormat("uk-UA", { month: "long" });
@@ -107,3 +97,20 @@ export const getUkrainianMonthName = (monthIndex: number): string => {
   const formatter = new Intl.DateTimeFormat("uk-UA", { month: "long" });
   return capitalize(formatter.format(date));
 };
+
+export enum Month {
+  January = 1,
+  February,
+  March,
+  April,
+  May,
+  June,
+  July,
+  August,
+  September,
+  October,
+  November,
+  December,
+}
+
+console.log(getMonthNumbers(Month.April, 2025));

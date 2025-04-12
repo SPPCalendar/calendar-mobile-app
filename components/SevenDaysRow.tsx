@@ -2,13 +2,29 @@ import React from "react";
 import { View } from "react-native";
 import MonthTypeDayCell from "./MonthTypeDayCell";
 
-const SevenDaysRow = () => {
+interface Props {
+  dates: number[];
+  anotherMonthDates?: number[];
+  anotherMonthIsNext?: boolean;
+}
+
+const SevenDaysRow: React.FC<Props> = ({
+  dates,
+  anotherMonthDates,
+  anotherMonthIsNext,
+}) => {
   return (
     <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-      {Array(7)
-        .fill(null)
-        .map((num, index) => (
-          <MonthTypeDayCell key={index} />
+      {anotherMonthIsNext === false &&
+        anotherMonthDates?.map((date, index) => (
+          <MonthTypeDayCell date={date} isActive={false} key={index} />
+        ))}
+      {dates.map((date, index) => (
+        <MonthTypeDayCell date={date} isActive={true} key={index} />
+      ))}
+      {anotherMonthIsNext === true &&
+        anotherMonthDates?.map((date, index) => (
+          <MonthTypeDayCell date={date} isActive={false} key={index} />
         ))}
     </View>
   );
