@@ -19,6 +19,12 @@ export default function MonthPresentation() {
   const [events, setEvents] = useState<CalendarEvent[][]>([]);
   const calendarId = useCalendarStore((state) => state.calendarId);
 
+  const fetchData = async () => {
+    const fetched = await fetchMonthEvents(month, year, calendarId);
+    setMonthDates(getMonthDates(month, year));
+    setEvents(fetched);
+  }
+
   const moveMinusOneMonth = () => {    
     let newMonth = null;
     let newYear = null;
@@ -49,13 +55,7 @@ export default function MonthPresentation() {
   };
   
   
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetched = await fetchMonthEvents(month, year, calendarId);
-      setMonthDates(getMonthDates(month, year));
-      setEvents(fetched);
-    }
-    
+  useEffect(() => {  
     fetchData();
   }, [month, calendarId]);
 
