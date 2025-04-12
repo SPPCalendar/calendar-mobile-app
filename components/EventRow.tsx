@@ -24,7 +24,7 @@ const EventRow: React.FC<MonthNameDisplayProps> = ({ event }) => {
       style={{
         flexDirection: "row",
         width: "100%",
-        borderColor: "#BE38EE",
+        borderColor: event.color,
         borderWidth: 1,
         borderRadius: 30,
         gap: 17,
@@ -37,7 +37,7 @@ const EventRow: React.FC<MonthNameDisplayProps> = ({ event }) => {
         style={{
           width: 30,
           height: "100%",
-          backgroundColor: "#BE38EE",
+          backgroundColor: event.color,
           borderTopLeftRadius: 30,
           borderBottomLeftRadius: 30,
         }}
