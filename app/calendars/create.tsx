@@ -11,6 +11,9 @@ import {
   View,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import api from "@/utils/api";
+import { router } from "expo-router";
+import { getCurrentUsername } from "@/utils/authTokenHelper";
 
 const create = () => {
   const colors = ["#00F400", "#867759", "#098800", "#048921"];
@@ -24,30 +27,38 @@ const create = () => {
   };
 
   const handleCreateCalendar = async () => {
-    // if (!calendarId) {
-    //   console.warn("No calendar selected");
-    //   return;
-    // }
-    // try {
-    //   const requestBody = {
-    //     event_name: text,
-    //     start_time: startDate.toISOString(),
-    //     end_time: endDate.toISOString(),
-    //     color: "#007AFF", // Static for now; could come from category later
-    //     calendar_id: calendarId,
-    //   };
-    //   console.log("Creating event with data:", requestBody);
-    //   const response = await api.post("/events", requestBody);
-    //   console.log("Event successfully created:", response.data);
-    //   // Navigate to another screen after creating the event
-    //   router.push("/presentation/day_presentation");
-    // } catch (error: any) {
-    //   console.error(
-    //     "Failed to create event:",
-    //     error?.response?.data || error.message
-    //   );
-    //   alert("Не вдалося створити подію. Спробуйте ще раз.");
-    // }
+    const currentUsername = getCurrentUsername();
+    if (!currentUsername) {
+      alert("Користувача не знайдено.");
+      return;
+    }
+
+    try {
+      const requestBody = {
+        calendar_name: text,
+        color,
+        users: [
+          { username: currentUsername, access_level: "owner" },
+          ...users.map((username) => ({
+            username,
+            access_level: "owner",
+          })),
+        ],
+      };
+  
+      console.log("Creating calendar with:", requestBody);
+  
+      const response = await api.post("/calendars", requestBody);
+  
+      console.log("Calendar created:", response.data);
+  
+      // Navigate back or forward after successful creation
+      router.back();
+
+    } catch (error: any) {
+      console.error("Error creating calendar:", error?.response?.data || error.message);
+      alert("Не вдалося створити календар. Спробуйте ще раз.");
+    }
   };
 
   return (
@@ -75,6 +86,7 @@ const create = () => {
         >
           {colors.map((color) => (
             <Picker.Item
+              key={color}
               style={{ backgroundColor: color }}
               label={color}
               value={color}
@@ -97,8 +109,8 @@ const create = () => {
           }}
         ></Button>
 
-        {users.map((user) => (
-          <Text>{user}</Text>
+        {users.map((user, i) => (
+          <Text key={i}>{user}</Text>
         ))}
 
         <TouchableOpacity
