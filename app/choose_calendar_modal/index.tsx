@@ -1,6 +1,7 @@
 import ChevronRight from "@/components/icons/ChevronRight";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import { Text, TouchableOpacity, View } from "react-native";
 import { useCalendarStore } from "@/stores/calendar_store";
 import api from "@/utils/api"; // adjust path if needed
@@ -17,7 +18,7 @@ const ChooseCalendarModal = () => {
   const { setCalendarId } = useCalendarStore();
   const router = useRouter();
 
-  useEffect(() => {
+  useFocusEffect(() => {
     const fetchCalendars = async () => {
       try {
         const response = await api.get<Calendar[]>("/calendars/me");
@@ -31,12 +32,12 @@ const ChooseCalendarModal = () => {
     };
 
     fetchCalendars();
-  }, []);
+  });
 
   const chooseCalendar = (calendar: Calendar) => {
     setCalendarId(calendar.id);
     console.log("Selected calendar:", calendar);
-    router.push("/presentation/day_presentation");
+    router.back();
   };
 
   const createCalendar = () => {
