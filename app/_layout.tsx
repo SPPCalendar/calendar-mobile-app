@@ -7,7 +7,7 @@ import { useOpacityStore } from "@/stores/opacity_store";
 import CalendarPresentationPickerModal from "@/components/CalendarPresentationPickerModal";
 
 export const unstable_settings = {
-  initialRouteName: "event_forms/new_event_form",
+  initialRouteName: "login",
 };
 
 export default function RootLayout() {
@@ -26,7 +26,7 @@ export default function RootLayout() {
       <View style={{ flex: 1, marginInline: 20, opacity: opacity }}>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen
-            name="choose_calendar_modal"
+            name="login"
             options={{
               presentation: "modal",
             }}
