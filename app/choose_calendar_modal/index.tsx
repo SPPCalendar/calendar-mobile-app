@@ -8,6 +8,13 @@ import api from "@/utils/api"; // adjust path if needed
 import { Colors } from "@/contants/Colors";
 import { Styles } from "@/contants/Styles";
 import CheckBigIcon from "@/components/icons/CheckBigIcon";
+import MoreVerticalIcon from "@/components/icons/MoreVerticalIcon";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
 
 interface Calendar {
   id: number;
@@ -73,7 +80,40 @@ const ChooseCalendarModal = () => {
           >
             {calendar.calendar_name}
           </Text>
-          {calendarId == calendar.id && <CheckBigIcon stroke="blue" />}
+
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            {calendarId == calendar.id && <CheckBigIcon stroke="blue" />}
+
+            <Menu>
+              <MenuTrigger>
+                <MoreVerticalIcon />
+              </MenuTrigger>
+              <MenuOptions>
+                <MenuOption onSelect={() => alert(`Редагувати`)}>
+                  <Text
+                    style={{
+                      fontFamily: "Montserrat_400Regular",
+                      fontSize: 16,
+                      color: "blue",
+                    }}
+                  >
+                    Редагувати
+                  </Text>
+                </MenuOption>
+                <MenuOption onSelect={() => alert(`Видалити`)}>
+                  <Text
+                    style={{
+                      fontFamily: "Montserrat_400Regular",
+                      fontSize: 16,
+                      color: "red",
+                    }}
+                  >
+                    Видалити
+                  </Text>
+                </MenuOption>
+              </MenuOptions>
+            </Menu>
+          </View>
         </TouchableOpacity>
       ))}
 

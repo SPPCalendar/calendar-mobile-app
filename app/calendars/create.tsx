@@ -1,7 +1,7 @@
 import FormTopBar from "@/components/TopBars/FormTopBar";
 import { Colors } from "@/contants/Colors";
 import { Styles } from "@/contants/Styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   SafeAreaView,
@@ -12,15 +12,28 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import api from "@/utils/api";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { getCurrentUsername } from "@/utils/authTokenHelper";
+import { Calendar } from "@/types/Calendar";
 
 const create = () => {
+  const { calendar } = useLocalSearchParams();
+  const parsedCalendar: Calendar | null = calendar
+    ? JSON.parse(calendar as string)
+    : null;
+
   const colors = ["#00F400", "#867759", "#098800", "#048921"];
   const [text, onChangeText] = useState("");
   const [color, setColor] = useState(colors[0]);
   const [users, setUsers] = useState<string[]>([]);
   const [user, setUser] = useState("");
+
+  useEffect(() => {
+    if (parsedCalendar) {
+      onChangeText(parsedCalendar.calendar_name);
+      setColor(parsedCalendar.color);
+    }
+  }, []);
 
   const addUser = (user: string) => {
     setUsers([...users, user]);
@@ -29,7 +42,7 @@ const create = () => {
   const handleCreateCalendar = async () => {
     const currentUsername = getCurrentUsername();
     if (!currentUsername) {
-      alert("Користувача не знайдено.");
+      alert("Користувач/ку не знайдено.");
       return;
     }
 
@@ -45,18 +58,20 @@ const create = () => {
           })),
         ],
       };
-  
+
       console.log("Creating calendar with:", requestBody);
-  
+
       const response = await api.post("/calendars", requestBody);
-  
+
       console.log("Calendar created:", response.data);
-  
+
       // Navigate back or forward after successful creation
       router.back();
-
     } catch (error: any) {
-      console.error("Error creating calendar:", error?.response?.data || error.message);
+      console.error(
+        "Error creating calendar:",
+        error?.response?.data || error.message
+      );
       alert("Не вдалося створити календар. Спробуйте ще раз.");
     }
   };
