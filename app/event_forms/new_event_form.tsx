@@ -8,19 +8,30 @@ import CategoryEventPicker from "@/components/CategoryEventPicker";
 import { useCalendarStore } from "@/stores/calendar_store";
 import { CalendarEvent } from "@/types/CalendarEvent";
 import api from "@/utils/api";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import dayjs from "dayjs";
 
 
 const NewEventForm = () => {
+  const { event } = useLocalSearchParams();
+  const parsedEvent: CalendarEvent | null = event ? JSON.parse(event as string) : null;
+  
   const [text, onChangeText] = useState("");
   const [isChecked, setChecked] = useState(false);
   const [notify, enableNotifications] = useState(false);
-
+  
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
   const calendarId = useCalendarStore((state) => state.calendarId);
+
+  useEffect(() => {
+    if (parsedEvent) {
+      onChangeText(parsedEvent.event_name);
+      setStartDate(new Date(parsedEvent.start_time));
+      setEndDate(new Date(parsedEvent.end_time));
+    }
+  }, []);
 
   useEffect(() => {
     if (!dayjs(startDate).isSame(endDate, "day")) {
@@ -55,12 +66,19 @@ const NewEventForm = () => {
         calendar_id: calendarId,
       };
 
-      console.log("Creating event with data:", requestBody);
-  
-      const response = await api.post("/events", requestBody);
-  
-      console.log("Event successfully created:", response.data);
+      console.log("Submitting event with data:", requestBody);
 
+      const response = parsedEvent
+        ? await api.put(`/events/${parsedEvent.id}`, requestBody)
+        : await api.post("/events", requestBody);
+
+      console.log(
+        parsedEvent
+          ? "Event successfully updated:"
+          : "Event successfully created:",
+        response.data
+      );
+  
       // Navigate to another screen after creating the event
       router.push("/presentation/day_presentation");
     } catch (error: any) {
@@ -72,7 +90,7 @@ const NewEventForm = () => {
   return (
     <View style={{ flex: 1, backgroundColor: Colors.backgroundColor, gap: 24 }}>
       <TextInput
-        style={[Styles.textInput, Styles.textInputText, { marginTop: 38 }]}
+        style={[Styles.textInput, Styles.textInputText, { marginTop: 38, paddingLeft: 30 }]}
         placeholderTextColor={Colors.textInputPlaceholder}
         onChangeText={onChangeText}
         value={text}
@@ -112,7 +130,9 @@ const NewEventForm = () => {
         }}
         onPress={handleCreateEvent}
       >
-        <Text style={[Styles.textInputText, {color: "#fff"}]}>Створити подію</Text>
+        <Text style={[Styles.textInputText, { color: "#fff" }]}>
+          {parsedEvent ? "Зберегти зміни" : "Створити подію"}
+        </Text>
       </TouchableOpacity>
     </View>
   );

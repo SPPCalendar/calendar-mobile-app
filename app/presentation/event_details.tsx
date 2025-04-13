@@ -13,7 +13,10 @@ const EventDetails = () => {
   const handleEdit = () => {
     console.log("Edit event:", parsedEvent);
     // TODO: Navigate to edit form or open edit modal
-    alert("Редагування ще не реалізовано");
+    router.push({
+      pathname: "/event_forms/new_event_form",
+      params: { event: event }
+    });
   };
 
   const handleDelete = () => {
