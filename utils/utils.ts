@@ -101,3 +101,11 @@ export const getUkrainianMonthName = (monthIndex: number): string => {
   const formatter = new Intl.DateTimeFormat("uk-UA", { month: "long" });
   return capitalize(formatter.format(date));
 };
+
+
+export const getMonthNameFromWeek = (weekNumber: number): string => {
+  // get first day of the week
+  const firstDayOfWeek = dayjs().isoWeek(weekNumber).startOf("isoWeek");
+  const formatter = new Intl.DateTimeFormat("uk-UA", { month: "long" });
+  return capitalize(formatter.format(firstDayOfWeek.toDate()));
+}

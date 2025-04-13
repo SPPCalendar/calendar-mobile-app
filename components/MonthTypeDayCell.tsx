@@ -15,7 +15,7 @@ const MonthTypeDayCell: React.FC<Props> = ({ date, events }) => {
   const router = useRouter();
 
   const openDayPresentation = () => {
-    router.navigate({
+    router.push({
       pathname: "/presentation/day_presentation",
       params: { dateParam: date.toISOString() },
     });

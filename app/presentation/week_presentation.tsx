@@ -8,7 +8,7 @@ import isoWeek from "dayjs/plugin/isoWeek";
 import { fetchEvents, fetchWeekEvents } from "@/utils/eventApi";
 import { useCalendarStore } from "@/stores/calendar_store";
 import { CalendarEvent } from "@/types/CalendarEvent";
-import { getWeekDates } from "@/utils/utils";
+import { getMonthNameFromWeek, getWeekDates } from "@/utils/utils";
 import { useFocusEffect } from "expo-router";
 
 dayjs.extend(isoWeek);
@@ -49,7 +49,7 @@ export default function WeekPresentation() {
     >
       <TimeUnitNameDisplay
         style={{ marginTop: 20 }}
-        monthName={`${weekNumber} тиждень`}
+        monthName={`(${getMonthNameFromWeek(weekNumber)}) ${weekNumber} тиждень`}
         onPressLeftArrow={moveMinusOneWeek}
         onPressRightArrow={movePlusOneWeek}
       />
