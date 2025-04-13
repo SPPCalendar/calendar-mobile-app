@@ -4,6 +4,7 @@ import { CalendarEvent } from "@/types/CalendarEvent";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import dayjs from "dayjs"
+import api from "@/utils/api";
 
 const EventDetails = () => {
   const { event } = useLocalSearchParams();
@@ -20,9 +21,30 @@ const EventDetails = () => {
   };
 
   const handleDelete = () => {
-    console.log("Delete event:", parsedEvent);
-    // TODO: Implement deletion logic
-    Alert.alert("Видалення події", "Цю функцію ще не реалізовано");
+    Alert.alert(
+      "Підтвердження",
+      "Ви впевнені, що хочете видалити цю подію?",
+      [
+        {
+          text: "Скасувати",
+          style: "cancel",
+        },
+        {
+          text: "Видалити",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await api.delete(`/events/${parsedEvent.id}`);
+              Alert.alert("Успішно", "Подію видалено");
+              router.back(); // Go back after deletion
+            } catch (error) {
+              console.error("Failed to delete event:", error);
+              Alert.alert("Помилка", "Не вдалося видалити подію");
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (

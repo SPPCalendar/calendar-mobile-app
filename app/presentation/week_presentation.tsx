@@ -1,7 +1,7 @@
 import CalendarWeekGrid from "@/components/CalendarWeekGrid";
 import TimeUnitNameDisplay from "@/components/TimeUnitNameDisplay";
 import { Colors } from "@/contants/Colors";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
@@ -9,6 +9,7 @@ import { fetchEvents, fetchWeekEvents } from "@/utils/eventApi";
 import { useCalendarStore } from "@/stores/calendar_store";
 import { CalendarEvent } from "@/types/CalendarEvent";
 import { getWeekDates } from "@/utils/utils";
+import { useFocusEffect } from "expo-router";
 
 dayjs.extend(isoWeek);
 
@@ -26,15 +27,16 @@ export default function WeekPresentation() {
   const moveMinusOneWeek = () => setWeekNumber((prev) => prev - 1);
   const movePlusOneWeek = () => setWeekNumber((prev) => prev + 1);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetched = await fetchWeekEvents(weekNumber, 2025, calendarId);   // TODO: calculate year based on weekNumber
-      setWeekDates(getWeekDates(weekNumber, 2025));
-      setEvents(fetched);
-    }
-
-    fetchData();
-  }, [weekNumber, calendarId]);
+  useFocusEffect(useCallback(() => {
+      const fetchData = async () => {
+        const fetched = await fetchWeekEvents(weekNumber, 2025, calendarId);   // TODO: calculate year based on weekNumber
+        setWeekDates(getWeekDates(weekNumber, 2025));
+        setEvents(fetched);
+      }
+  
+      fetchData();
+    }, [weekNumber, calendarId])
+  );
 
   return (
     <View

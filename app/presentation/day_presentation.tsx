@@ -3,11 +3,12 @@ import TimeUnitNameDisplay from "@/components/TimeUnitNameDisplay";
 import { Colors } from "@/contants/Colors";
 import { CalendarEvent } from "@/types/CalendarEvent";
 import { formatUkrainianDate } from "@/utils/utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { View } from "react-native";
 import { useCalendarStore } from "@/stores/calendar_store";
 import { fetchEvents } from "@/utils/eventApi";
 import { useLocalSearchParams } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
 
 const day_presentation = () => {
   const { dateParam } = useLocalSearchParams();
@@ -18,13 +19,13 @@ const day_presentation = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const calendarId = useCalendarStore((state) => state.calendarId);
 
-  useEffect(() => {
-    // Set date title
-    setDateTitle(formatUkrainianDate(date));
-    // Fetch events for the current date
-    loadEvents();
-  }, [date, calendarId]);
-
+  useFocusEffect(
+    useCallback(() => {
+      setDateTitle(formatUkrainianDate(date));
+      loadEvents();
+    }, [date, calendarId])
+  );
+  
   const moveMinusOneDay = () => {
     const previousDate = new Date(date);
     previousDate.setDate(date.getDate() - 1);

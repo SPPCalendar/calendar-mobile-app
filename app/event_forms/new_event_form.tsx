@@ -80,7 +80,7 @@ const NewEventForm = () => {
       );
   
       // Navigate to another screen after creating the event
-      router.push("/presentation/day_presentation");
+      router.back();
     } catch (error: any) {
       console.error("Failed to create event:", error?.response?.data || error.message);
       alert("Не вдалося створити подію. Спробуйте ще раз.");
