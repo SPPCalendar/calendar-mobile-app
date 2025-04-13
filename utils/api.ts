@@ -1,7 +1,11 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/auth_store";
 
-const API_BASE_URL = "https://calendar-backend-0iw7.onrender.com/api";
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
+
+if (!API_BASE_URL) {
+  throw new Error("EXPO_PUBLIC_API_BASE_URL is not defined in .env");
+}
 
 const api = axios.create({
   baseURL: API_BASE_URL,
