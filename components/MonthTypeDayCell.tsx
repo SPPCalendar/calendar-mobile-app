@@ -1,7 +1,8 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { CalendarEvent } from "@/types/CalendarEvent";
 import dayjs from "dayjs";
+import { useRouter } from "expo-router";
 
 interface Props {
   date: dayjs.Dayjs;
@@ -11,9 +12,17 @@ interface Props {
 const MonthTypeDayCell: React.FC<Props> = ({ date, events }) => {
   const MIN_ROWS = 4;
   const placeholderCount = Math.max(0, MIN_ROWS - events.length);
+  const router = useRouter();
+
+  const openDayPresentation = () => {
+    router.navigate({
+      pathname: "/presentation/day_presentation",
+      params: { dateParam: date.toISOString() },
+    });
+  };
 
   return (
-    <View style={{ padding: 2 }}>
+    <TouchableOpacity style={{ padding: 2 }} onPress={openDayPresentation}>
       <Text
         style={{
           height: 13,
@@ -65,7 +74,7 @@ const MonthTypeDayCell: React.FC<Props> = ({ date, events }) => {
             </View>
           ))}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
