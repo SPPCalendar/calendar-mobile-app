@@ -50,7 +50,7 @@ export default function TopBar() {
       <View style={{ flexDirection: "row", gap: 12 }}>
         <FilterIcon />
 
-        <TouchableOpacity onPress={() => router.push("/choose_calendar_modal")}>
+        <TouchableOpacity onPress={() => router.push("/choose_calendar_modal" as Href)}>
           <CalendarDaysIcon />
         </TouchableOpacity>
 

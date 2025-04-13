@@ -32,7 +32,9 @@ const FormTopBar: React.FC<FormTopBarProps> = ({ title }) => {
         }}
         onPress={() => router.back()}
       >
-        {/* <ArrowLeftMdIcon /> */}
+        <TouchableOpacity onPress={() => router.back()}>
+          {<ArrowLeftMdIcon />}
+        </TouchableOpacity>
       </TouchableOpacity>
       <Text
         style={{
