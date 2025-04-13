@@ -23,7 +23,10 @@ const ChooseCalendarModal = () => {
         const response = await api.get<Calendar[]>("/calendars/me");
         setCalendars(response.data);
       } catch (error: any) {
-        console.error("Failed to fetch calendars:", error?.response?.data || error.message);
+        console.error(
+          "Failed to fetch calendars:",
+          error?.response?.data || error.message
+        );
       }
     };
 
@@ -37,13 +40,19 @@ const ChooseCalendarModal = () => {
   };
 
   const createCalendar = () => {
-    console.log('create calendar button pressed')
-    //router.push("/calendars/create"); // or wherever you want
+    console.log("create calendar button pressed");
+    router.push("/calendars/create"); // or wherever you want
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.backgroundColor, padding: 24, gap: 16 }}>
-
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: Colors.backgroundColor,
+        padding: 24,
+        gap: 16,
+      }}
+    >
       {calendars.map((calendar) => (
         <TouchableOpacity
           onPress={() => chooseCalendar(calendar)}
@@ -61,12 +70,9 @@ const ChooseCalendarModal = () => {
         </TouchableOpacity>
       ))}
 
-      <TouchableOpacity
-              style={Styles.textInput}
-              onPress={createCalendar}
-            >
-              <Text style={Styles.textInputText}>+ Створити календар</Text>
-            </TouchableOpacity>
+      <TouchableOpacity style={Styles.textInput} onPress={createCalendar}>
+        <Text style={Styles.textInputText}>+ Створити календар</Text>
+      </TouchableOpacity>
     </View>
   );
 };
