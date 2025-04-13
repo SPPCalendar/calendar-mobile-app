@@ -1,36 +1,69 @@
-import { View } from "react-native";
+import React, { useState } from "react";
+import { View, TouchableOpacity } from "react-native";
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+
 import SearchIcon from "../icons/SearchIcon";
 import FilterIcon from "../icons/FilterIcon";
 import CalendarDaysIcon from "../icons/CalendarDaysIcon";
 import MoreGridBigIcon from "../icons/MoreGridBigIcon";
 import MoreVerticalIcon from "../icons/MoreVerticalIcon";
 import { Colors } from "@/contants/Colors";
-import React from "react";
-import { TouchableOpacity } from "react-native";
 import { useOpacityStore } from "@/stores/opacity_store";
 import { useModalStore } from "@/stores/modal_store";
 import { useAuthStore } from "@/stores/auth_store";
 import { Href, useRouter } from "expo-router";
+import dayjs from "dayjs";
 
 export default function TopBar() {
   const router = useRouter();
   const makeDimmed = useOpacityStore((state) => state.makeDimmed);
   const changeModalShown = useModalStore((state) => state.changeModalShown);
+  const accessToken = useAuthStore((state) => state.accessToken);
+
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const openCalendarPresentationPicker = () => {
     makeDimmed();
     changeModalShown(true);
   };
 
-  const accessToken = useAuthStore((state) => state.accessToken);
   const openUserProfileOrLogin = () => {
     if (accessToken) {
-      // User is logged in
       router.push("/profile");
     } else {
-      // User not logged in
       router.push("/login");
     }
+  };
+
+  const openCalendarPicker = () => {
+    router.push("/choose_calendar_modal" as Href);
+  };
+
+  const openDatePicker = () => {
+    setShowDatePicker(true);
+  };
+
+  const handleDateChange = (event: DateTimePickerEvent, date?: Date) => {
+    setShowDatePicker(false);
+
+    if (!date) return;
+
+    const newDateStr = dayjs(date).format("YYYY-MM-DD");
+    const currentDateStr = dayjs(selectedDate).format("YYYY-MM-DD");
+
+    if (newDateStr === currentDateStr) {
+      console.log("Date already selected:", newDateStr);
+      return;
+    }
+
+    setSelectedDate(date);
+    console.log("Picked new date:", newDateStr);
+    // You can do something like navigate to the day view:
+    // router.push({
+    //   pathname: "/calendar/day_presentation",
+    //   params: { dateParam: date.toISOString() },
+    // });
   };
 
   return (
@@ -48,20 +81,31 @@ export default function TopBar() {
     >
       <SearchIcon />
       <View style={{ flexDirection: "row", gap: 12 }}>
-        <FilterIcon />
+        <TouchableOpacity onPress={openCalendarPicker}>
+          <FilterIcon />
+        </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => router.push("/choose_calendar_modal" as Href)}>
+        <TouchableOpacity onPress={openDatePicker}>
           <CalendarDaysIcon />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => openCalendarPresentationPicker()}>
+        <TouchableOpacity onPress={openCalendarPresentationPicker}>
           <MoreGridBigIcon />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => openUserProfileOrLogin()}>
+        <TouchableOpacity onPress={openUserProfileOrLogin}>
           <MoreVerticalIcon />
         </TouchableOpacity>
       </View>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={selectedDate}
+          mode="date"
+          display="default"
+          onChange={handleDateChange}
+        />
+      )}
     </View>
   );
 }
