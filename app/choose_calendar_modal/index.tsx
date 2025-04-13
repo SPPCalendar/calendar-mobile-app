@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useCalendarStore } from "@/stores/calendar_store";
 import api from "@/utils/api"; // adjust path if needed
+import { Colors } from "@/contants/Colors";
+import { Styles } from "@/contants/Styles";
 
 interface Calendar {
   id: number;
@@ -40,21 +42,7 @@ const ChooseCalendarModal = () => {
   };
 
   return (
-    <View style={{ gap: 10, padding: 16 }}>
-      <TouchableOpacity onPress={() => router.back()}>
-        <ChevronRight />
-      </TouchableOpacity>
-
-      <Text
-        style={{
-          fontFamily: "Montserrat_400Regular",
-          fontSize: 20,
-          textAlign: "center",
-          paddingBottom: 16,
-        }}
-      >
-        Choose a calendar
-      </Text>
+    <View style={{ flex: 1, backgroundColor: Colors.backgroundColor, padding: 24, gap: 16 }}>
 
       {calendars.map((calendar) => (
         <TouchableOpacity
@@ -74,19 +62,11 @@ const ChooseCalendarModal = () => {
       ))}
 
       <TouchableOpacity
-        onPress={createCalendar}
-        style={{
-          marginTop: 24,
-          backgroundColor: "#007AFF",
-          borderRadius: 10,
-          padding: 12,
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 16, color: "#fff" }}>
-          + Create New Calendar
-        </Text>
-      </TouchableOpacity>
+              style={Styles.textInput}
+              onPress={createCalendar}
+            >
+              <Text style={Styles.textInputText}>+ Створити календар</Text>
+            </TouchableOpacity>
     </View>
   );
 };
