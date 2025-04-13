@@ -1,12 +1,13 @@
 import ChevronRight from "@/components/icons/ChevronRight";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useCalendarStore } from "@/stores/calendar_store";
 import api from "@/utils/api"; // adjust path if needed
 import { Colors } from "@/contants/Colors";
 import { Styles } from "@/contants/Styles";
+import CheckBigIcon from "@/components/icons/CheckBigIcon";
 
 interface Calendar {
   id: number;
@@ -15,7 +16,7 @@ interface Calendar {
 
 const ChooseCalendarModal = () => {
   const [calendars, setCalendars] = useState<Calendar[]>([]);
-  const { setCalendarId } = useCalendarStore();
+  const { calendarId, setCalendarId } = useCalendarStore();
   const router = useRouter();
 
   useFocusEffect(() => {
@@ -37,7 +38,6 @@ const ChooseCalendarModal = () => {
   const chooseCalendar = (calendar: Calendar) => {
     setCalendarId(calendar.id);
     console.log("Selected calendar:", calendar);
-    router.back();
   };
 
   const createCalendar = () => {
@@ -56,6 +56,11 @@ const ChooseCalendarModal = () => {
     >
       {calendars.map((calendar) => (
         <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
           onPress={() => chooseCalendar(calendar)}
           key={calendar.id}
         >
@@ -68,6 +73,7 @@ const ChooseCalendarModal = () => {
           >
             {calendar.calendar_name}
           </Text>
+          {calendarId == calendar.id && <CheckBigIcon stroke="blue" />}
         </TouchableOpacity>
       ))}
 

@@ -5,7 +5,7 @@ import Svg, { SvgProps, Path } from "react-native-svg";
 const CheckBigIcon = (props: SvgProps) => (
   <Svg width={18} height={13} fill="none" {...props}>
     <Path
-      stroke={Colors.backgroundColor}
+      stroke={props.stroke ?? Colors.backgroundColor}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}
