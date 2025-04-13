@@ -60,10 +60,10 @@ export default function TopBar() {
     setSelectedDate(date);
     console.log("Picked new date:", newDateStr);
     // You can do something like navigate to the day view:
-    // router.push({
-    //   pathname: "/calendar/day_presentation",
-    //   params: { dateParam: date.toISOString() },
-    // });
+    router.push({
+      pathname: "/presentation/day_presentation",
+      params: { dateParam: date.toISOString() },
+    });
   };
 
   return (

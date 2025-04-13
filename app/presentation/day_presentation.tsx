@@ -3,7 +3,7 @@ import TimeUnitNameDisplay from "@/components/TimeUnitNameDisplay";
 import { Colors } from "@/contants/Colors";
 import { CalendarEvent } from "@/types/CalendarEvent";
 import { formatUkrainianDate } from "@/utils/utils";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { View } from "react-native";
 import { useCalendarStore } from "@/stores/calendar_store";
 import { fetchEvents } from "@/utils/eventApi";
@@ -15,13 +15,12 @@ const day_presentation = () => {
   const [date, setDate] = useState(
     dateParam ? new Date(dateParam as string) : new Date()
   );
-  const [dateTitle, setDateTitle] = useState("");
+  const dateTitle = useMemo(() => formatUkrainianDate(date), [date]);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const calendarId = useCalendarStore((state) => state.calendarId);
 
   useFocusEffect(
     useCallback(() => {
-      setDateTitle(formatUkrainianDate(date));
       loadEvents();
     }, [date, calendarId])
   );
