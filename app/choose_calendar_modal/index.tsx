@@ -2,7 +2,7 @@ import ChevronRight from "@/components/icons/ChevronRight";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { useCalendarStore } from "@/stores/calendar_store";
 import api from "@/utils/api"; // adjust path if needed
 import { Colors } from "@/contants/Colors";
@@ -15,11 +15,7 @@ import {
   MenuOption,
   MenuTrigger,
 } from "react-native-popup-menu";
-
-interface Calendar {
-  id: number;
-  calendar_name: string;
-}
+import { Calendar } from "@/types/Calendar";
 
 const ChooseCalendarModal = () => {
   const [calendars, setCalendars] = useState<Calendar[]>([]);
@@ -50,6 +46,40 @@ const ChooseCalendarModal = () => {
   const createCalendar = () => {
     console.log("create calendar button pressed");
     router.push("/calendars/create"); // or wherever you want
+  };
+
+  const goToEditForm = (calendar: Calendar) => {
+    router.push({
+      pathname: "/calendars/create",
+      params: { calendar: JSON.stringify(calendar) },
+    });
+  };
+
+  const handleDelete = (calendar: Calendar) => {
+    Alert.alert(
+      "Підтвердження",
+      "Ви впевнені, що хочете видалити цей календар?",
+      [
+        {
+          text: "Скасувати",
+          style: "cancel",
+        },
+        {
+          text: "Видалити",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await api.delete(`/calendars/${calendar.id}`);
+              Alert.alert("Успішно", "Календар видалено");
+              router.back(); // Go back after deletion
+            } catch (error) {
+              console.error("Failed to delete event:", error);
+              Alert.alert("Помилка", "Не вдалося видалити подію");
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -85,11 +115,11 @@ const ChooseCalendarModal = () => {
             {calendarId == calendar.id && <CheckBigIcon stroke="blue" />}
 
             <Menu>
-              <MenuTrigger>
+              <MenuTrigger onPress={() => console.log("hi")}>
                 <MoreVerticalIcon />
               </MenuTrigger>
               <MenuOptions>
-                <MenuOption onSelect={() => alert(`Редагувати`)}>
+                <MenuOption onSelect={() => goToEditForm(calendar)}>
                   <Text
                     style={{
                       fontFamily: "Montserrat_400Regular",
@@ -100,7 +130,7 @@ const ChooseCalendarModal = () => {
                     Редагувати
                   </Text>
                 </MenuOption>
-                <MenuOption onSelect={() => alert(`Видалити`)}>
+                <MenuOption onSelect={() => handleDelete(calendar)}>
                   <Text
                     style={{
                       fontFamily: "Montserrat_400Regular",

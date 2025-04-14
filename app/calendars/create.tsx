@@ -138,7 +138,7 @@ const create = () => {
           onPress={handleCreateCalendar}
         >
           <Text style={[Styles.textInputText, { color: "#fff" }]}>
-            Створити календар
+            {parsedCalendar ? "Зберегти зміни" : "Створити календар"}
           </Text>
         </TouchableOpacity>
       </View>
