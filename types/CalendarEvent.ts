@@ -1,6 +1,7 @@
 export type CalendarEvent = {
     id: number;
     event_name: string;
+    description: string | null;
     start_time: string;
     end_time: string;
     color: string;

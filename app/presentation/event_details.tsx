@@ -64,6 +64,10 @@ const EventDetails = () => {
         {parsedEvent.event_name}
       </Text>
 
+      {parsedEvent.description && (
+        <Text style={styles.text}>{parsedEvent.description}</Text>
+      )}
+
       <Text style={styles.text}>
         Початок: {dayjs(parsedEvent.start_time).format("DD.MM.YYYY HH:mm")}
       </Text>
