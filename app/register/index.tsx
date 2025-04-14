@@ -22,9 +22,9 @@ const RegisterForm = () => {
         email,
         password,
       });
-  
+
       const { accessToken, userId } = response.data;
-      
+
       useAuthStore.getState().setAccessToken(accessToken);
       const calendarRes = await api.post(
         "/calendars",
@@ -47,17 +47,26 @@ const RegisterForm = () => {
 
       const newCalendarId = calendarRes.data.id;
       useCalendarStore.getState().setCalendarId(newCalendarId);
-  
-  
+
       router.replace("/" as Href);
     } catch (error: any) {
-      console.error("Registration failed:", error?.response?.data || error.message);
+      console.error(
+        "Registration failed:",
+        error?.response?.data || error.message
+      );
       alert("Не вдалося зареєструватися. Спробуйте ще раз.");
     }
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.backgroundColor, padding: 24, gap: 16 }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: Colors.backgroundColor,
+        padding: 24,
+        gap: 16,
+      }}
+    >
       <TextInput
         placeholder="Ім'я для відображення"
         value={displayName}
