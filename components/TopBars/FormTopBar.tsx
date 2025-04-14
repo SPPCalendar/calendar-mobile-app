@@ -7,9 +7,10 @@ import { useRouter } from "expo-router";
 
 interface FormTopBarProps {
   title: string;
+  showBackButton?: boolean;
 }
 
-const FormTopBar: React.FC<FormTopBarProps> = ({ title }) => {
+const FormTopBar: React.FC<FormTopBarProps> = ({ title, showBackButton }) => {
   const router = useRouter();
 
   return (
@@ -32,9 +33,11 @@ const FormTopBar: React.FC<FormTopBarProps> = ({ title }) => {
         }}
         onPress={() => router.back()}
       >
-        <TouchableOpacity onPress={() => router.back()}>
-          {<ArrowLeftMdIcon />}
-        </TouchableOpacity>
+        {(showBackButton === undefined || showBackButton) && (
+          <TouchableOpacity onPress={() => router.back()}>
+            {<ArrowLeftMdIcon />}
+          </TouchableOpacity>
+        )}
       </TouchableOpacity>
       <Text
         style={{
