@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 
 import SearchIcon from "../icons/SearchIcon";
 import FilterIcon from "../icons/FilterIcon";
@@ -41,7 +43,7 @@ export default function TopBar() {
   };
 
   const openDatePicker = () => {
-    setShowDatePicker(true);
+    setShowDatePicker(!showDatePicker);
   };
 
   const handleDateChange = (event: DateTimePickerEvent, date?: Date) => {
