@@ -1,4 +1,5 @@
 import { CalendarEvent } from "@/types/CalendarEvent";
+import dayjs from "dayjs";
 import { useRouter } from "expo-router";
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
@@ -46,11 +47,11 @@ const EventRow: React.FC<MonthNameDisplayProps> = ({ event }) => {
       <View
         style={{ flexDirection: "column", gap: 8, justifyContent: "center" }}
       >
-        <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 18 }}>
+        <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 18 }} numberOfLines={1}>
           {event.event_name}
         </Text>
         <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 16 }}>
-          {"Цілий день"}
+          {dayjs(event.start_time).format("HH:mm")} - {dayjs(event.end_time).format("HH:mm")}
         </Text>
       </View>
     </TouchableOpacity>
