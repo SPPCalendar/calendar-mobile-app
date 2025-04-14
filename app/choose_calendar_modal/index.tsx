@@ -71,7 +71,6 @@ const ChooseCalendarModal = () => {
             try {
               await api.delete(`/calendars/${calendar.id}`);
               Alert.alert("Успішно", "Календар видалено");
-              router.back(); // Go back after deletion
             } catch (error) {
               console.error("Failed to delete calendar:", error);
               Alert.alert("Помилка", "Не вдалося видалити календар");
