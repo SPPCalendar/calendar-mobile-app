@@ -14,9 +14,27 @@ const RegisterForm = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegister = async () => {
     try {
+      if (password != confirmPassword) {
+        alert("Пароль не підтверджено, спробуйте ще раз");
+        return;
+      }
+
+      if (password.length < 6) {
+        alert("Пароль має бути не менше 6 символів");
+      }
+
+      if (/[a-zA-Z]/.test(password)) {
+        alert("Пароль має містити хоча б одну букву");
+      }
+
+      if (/\d/.test(password)) {
+        alert("Пароль має містити хоча б одну цифру");
+      }
+
       const response = await api.post("/auth/register", {
         display_name: displayName,
         username,
@@ -100,6 +118,19 @@ const RegisterForm = () => {
         style={Styles.textInput}
         placeholderTextColor={Colors.textInputPlaceholder}
       />
+      <TextInput
+        placeholder="Підтвердити пароль"
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        secureTextEntry
+        style={Styles.textInput}
+        placeholderTextColor={Colors.textInputPlaceholder}
+      />
+
+      <Text style={{ fontFamily: "Montserrat_400Regular", fontSize: 14 }}>
+        Пароль має бути не менше 6 символів, містити хоча б одну букву та хоча б
+        одну цифру
+      </Text>
 
       <TouchableOpacity
         style={{
