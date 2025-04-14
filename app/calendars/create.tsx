@@ -132,6 +132,7 @@ const create = () => {
           onChangeText={setUser}
           value={user}
           placeholder="Додати користувач/ку"
+          autoCapitalize="none"
         />
         <Button
           title="Додати"

@@ -81,6 +81,7 @@ const RegisterForm = () => {
         onChangeText={setUsername}
         style={Styles.textInput}
         placeholderTextColor={Colors.textInputPlaceholder}
+        autoCapitalize="none"
       />
       <TextInput
         placeholder="Електронна пошта"
