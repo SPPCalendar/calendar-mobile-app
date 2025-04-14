@@ -73,8 +73,8 @@ const ChooseCalendarModal = () => {
               Alert.alert("Успішно", "Календар видалено");
               router.back(); // Go back after deletion
             } catch (error) {
-              console.error("Failed to delete event:", error);
-              Alert.alert("Помилка", "Не вдалося видалити подію");
+              console.error("Failed to delete calendar:", error);
+              Alert.alert("Помилка", "Не вдалося видалити календар");
             }
           },
         },
