@@ -4,13 +4,13 @@ import WeekDaysDisplay from "@/components/WeekDaysDisplay";
 import { Colors } from "@/contants/Colors";
 import { getUkrainianMonthName, Month } from "@/utils/utils";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import { getMonthDates } from "@/utils/utils";
 import { useCalendarStore } from "@/stores/calendar_store";
 import { fetchMonthEvents } from "@/utils/eventApi";
 import { CalendarEvent } from "@/types/CalendarEvent";
-import { useLocalSearchParams } from "expo-router";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
 
 export default function MonthPresentation() {
   const { monthParam, yearParam } = useLocalSearchParams();
@@ -65,10 +65,12 @@ export default function MonthPresentation() {
     setMonth(newMonth);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [month, calendarId]);
-
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [month, calendarId])
+  );
+  
   return (
     <View
       style={{
