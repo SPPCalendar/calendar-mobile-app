@@ -32,6 +32,15 @@ const create = () => {
     if (parsedCalendar) {
       onChangeText(parsedCalendar.calendar_name);
       setColor(parsedCalendar.color);
+      
+      // Extracting usernames from the parsed calendar's users
+      // Omit the current user from the list
+      const currentUsername = getCurrentUsername();
+      const filteredUsers = parsedCalendar.users
+        .filter((u) => u.user.username !== currentUsername)
+        .map((u) => u.user.username);
+
+      setUsers(filteredUsers);
     }
   }, []);
 
@@ -59,12 +68,19 @@ const create = () => {
         ],
       };
 
-      console.log("Creating calendar with:", requestBody);
+      console.log("Submitting calendar with data:", requestBody);
 
-      const response = await api.post("/calendars", requestBody);
+      const response = parsedCalendar
+        ? await api.put(`/calendars/${parsedCalendar.id}`, requestBody)
+        : await api.post("/calendars", requestBody);
 
-      console.log("Calendar created:", response.data);
-
+      console.log(
+        parsedCalendar
+          ? "Calendar successfully updated:"
+          : "Calendar successfully created:",
+        response.data
+      );
+      
       // Navigate back or forward after successful creation
       router.back();
     } catch (error: any) {
@@ -78,7 +94,7 @@ const create = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backgroundColor }}>
-      <FormTopBar title="Нова подія" />
+      <FormTopBar title={parsedCalendar ? "Зміна календарю" : "Новий календар"}  />
       <View
         style={{ flex: 1, backgroundColor: Colors.backgroundColor, gap: 10 }}
       >
