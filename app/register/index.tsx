@@ -16,23 +16,39 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password: string): boolean => {
+    if (password != confirmPassword) {
+      alert("Пароль не підтверджено, спробуйте ще раз");
+      return false;
+    }
+
+    if (password.length < 6) {
+      alert("Пароль має бути не менше 6 символів");
+      return false;
+    }
+
+    if (/[a-zA-Z]/.test(password)) {
+      alert("Пароль має містити хоча б одну букву");
+      return false;
+    }
+
+    if (/\d/.test(password)) {
+      alert("Пароль має містити хоча б одну цифру");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleRegister = async () => {
     try {
-      if (password != confirmPassword) {
-        alert("Пароль не підтверджено, спробуйте ще раз");
+      if (!validateEmail(email) || !validatePassword(password)) {
         return;
-      }
-
-      if (password.length < 6) {
-        alert("Пароль має бути не менше 6 символів");
-      }
-
-      if (/[a-zA-Z]/.test(password)) {
-        alert("Пароль має містити хоча б одну букву");
-      }
-
-      if (/\d/.test(password)) {
-        alert("Пароль має містити хоча б одну цифру");
       }
 
       const response = await api.post("/auth/register", {
