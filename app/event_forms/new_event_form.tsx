@@ -11,17 +11,24 @@ import api from "@/utils/api";
 import { router, useLocalSearchParams } from "expo-router";
 import dayjs from "dayjs";
 
-
 const NewEventForm = () => {
   const { event } = useLocalSearchParams();
-  const parsedEvent: CalendarEvent | null = event ? JSON.parse(event as string) : null;
-  
+  const parsedEvent: CalendarEvent | null = event
+    ? JSON.parse(event as string)
+    : null;
+
   const [text, onChangeText] = useState("");
-  const [isChecked, setChecked] = useState(false);
+  const [isWholeDay, setIsWholeDay] = useState(false);
   const [notify, enableNotifications] = useState(false);
-  
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+
+  const currentDate = new Date();
+
+  const [startDate, setStartDate] = useState(
+    new Date(currentDate.setMinutes(0, 0, 0))
+  );
+  const [endDate, setEndDate] = useState(
+    new Date(currentDate.setHours(currentDate.getHours() + 1, 0, 0, 0))
+  );
 
   const calendarId = useCalendarStore((state) => state.calendarId);
 
@@ -37,26 +44,36 @@ const NewEventForm = () => {
     if (!dayjs(startDate).isSame(endDate, "day")) {
       // Update endDate's date to match startDate, keep its time
       const updated = new Date(startDate);
-      updated.setHours(endDate.getHours(), endDate.getMinutes(), endDate.getSeconds(), endDate.getMilliseconds());
+      updated.setHours(
+        endDate.getHours(),
+        endDate.getMinutes(),
+        endDate.getSeconds(),
+        endDate.getMilliseconds()
+      );
       setEndDate(updated);
     }
   }, [startDate]);
-  
+
   useEffect(() => {
     if (!dayjs(startDate).isSame(endDate, "day")) {
       // Update startDate's date to match endDate, keep its time
       const updated = new Date(endDate);
-      updated.setHours(startDate.getHours(), startDate.getMinutes(), startDate.getSeconds(), startDate.getMilliseconds());
+      updated.setHours(
+        startDate.getHours(),
+        startDate.getMinutes(),
+        startDate.getSeconds(),
+        startDate.getMilliseconds()
+      );
       setStartDate(updated);
     }
   }, [endDate]);
-  
+
   const handleCreateEvent = async () => {
     if (!calendarId) {
       console.warn("No calendar selected");
       return;
     }
-  
+
     try {
       const requestBody = {
         event_name: text,
@@ -78,11 +95,14 @@ const NewEventForm = () => {
           : "Event successfully created:",
         response.data
       );
-  
+
       // Navigate to another screen after creating the event
       router.back();
     } catch (error: any) {
-      console.error("Failed to create event:", error?.response?.data || error.message);
+      console.error(
+        "Failed to create event:",
+        error?.response?.data || error.message
+      );
       alert("Не вдалося створити подію. Спробуйте ще раз.");
     }
   };
@@ -90,7 +110,11 @@ const NewEventForm = () => {
   return (
     <View style={{ flex: 1, backgroundColor: Colors.backgroundColor, gap: 24 }}>
       <TextInput
-        style={[Styles.textInput, Styles.textInputText, { marginTop: 38, paddingLeft: 30 }]}
+        style={[
+          Styles.textInput,
+          Styles.textInputText,
+          { marginTop: 38, paddingLeft: 30 },
+        ]}
         placeholderTextColor={Colors.textInputPlaceholder}
         onChangeText={onChangeText}
         value={text}
@@ -98,28 +122,23 @@ const NewEventForm = () => {
       />
 
       <View style={[Styles.textInput]}>
-        {/* <CheckboxWithText
+        <CheckboxWithText
           label="Цілий день"
-          isChecked={isChecked}
-          setChecked={setChecked}
-        /> */}
+          isChecked={isWholeDay}
+          setChecked={setIsWholeDay}
+          style={{ marginBottom: 16 }}
+        />
 
-        <EventStartEndDatePickers 
+        <EventStartEndDatePickers
           startDate={startDate}
           endDate={endDate}
           onChangeStart={setStartDate}
           onChangeEnd={setEndDate}
+          isWholeDay={isWholeDay}
         />
       </View>
 
       <CategoryEventPicker />
-
-      <CheckboxWithText
-        label="Оповістка"
-        style={[Styles.textInput]}
-        isChecked={notify}
-        setChecked={enableNotifications}
-      />
 
       <TouchableOpacity
         style={{

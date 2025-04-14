@@ -17,6 +17,7 @@ export const Styles = StyleSheet.create({
   textInputText: {
     fontFamily: "Montserrat_400Regular",
     fontSize: 18,
+    fontWeight: "bold",
   },
   chooseCalendarPresentationText: {
     fontFamily: "Montserrat_400Regular",
