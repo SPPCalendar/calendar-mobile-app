@@ -15,7 +15,8 @@ dayjs.extend(isLeapYear)
 export const fetchEvents = async (
   calendarId: number | null,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
+  eventName: string | null = null,
 ): Promise<CalendarEvent[]> => {
   if (!calendarId) {
     console.warn("No calendar specified when fetching events")
@@ -28,6 +29,7 @@ export const fetchEvents = async (
         calendar_id: calendarId,
         start_time: startDate.toISOString(),
         end_time: endDate.toISOString(),
+        event_name: eventName,
       },
     });
 
