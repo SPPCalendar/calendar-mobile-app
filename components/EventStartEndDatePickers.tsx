@@ -9,27 +9,30 @@ interface Props {
   endDate: Date;
   onChangeStart: (date: Date) => void;
   onChangeEnd: (date: Date) => void;
+  isWholeDay: boolean;
 }
 
-const EventStartEndDatePickers: React.FC<Props> = ({ 
+const EventStartEndDatePickers: React.FC<Props> = ({
   style,
   startDate,
   endDate,
   onChangeStart,
-  onChangeEnd, 
+  onChangeEnd,
+  isWholeDay,
 }) => {
   return (
     <View style={[{ gap: 21 }, style]}>
-      <Text style={Styles.textInputText}>
-        Початок та кінець
-      </Text>
       <DatePickerRow
         date={startDate}
         onChange={onChangeStart}
+        showTimeChoise={!isWholeDay}
+        isStart
       />
       <DatePickerRow
         date={endDate}
         onChange={onChangeEnd}
+        showTimeChoise={!isWholeDay}
+        isStart={false}
       />
     </View>
   );

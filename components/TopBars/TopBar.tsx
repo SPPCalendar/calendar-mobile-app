@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, TouchableOpacity, TextInput } from "react-native";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
@@ -13,15 +13,24 @@ import { Colors } from "@/contants/Colors";
 import { useOpacityStore } from "@/stores/opacity_store";
 import { useModalStore } from "@/stores/modal_store";
 import { useAuthStore } from "@/stores/auth_store";
-import { Href, useRouter } from "expo-router";
+import { Href, usePathname, useRouter } from "expo-router";
 import dayjs from "dayjs";
+import { Feather } from "@expo/vector-icons";
+import { useSearchedEventsStore } from "@/stores/searched_events_store";
+import { useCalendarStore } from "@/stores/calendar_store";
 
 export default function TopBar() {
   const router = useRouter();
+  const pathname = usePathname();
   const makeDimmed = useOpacityStore((state) => state.makeDimmed);
   const changeModalShown = useModalStore((state) => state.changeModalShown);
   const accessToken = useAuthStore((state) => state.accessToken);
-
+  const [searchActive, setSearchActive] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [debouncedText, setDebouncedText] = useState("");
+  const setEvents = useSearchedEventsStore((state) => state.setEvents);
+  const clearEvents = useSearchedEventsStore((state) => state.clearEvents);
+  const { calendarId } = useCalendarStore();
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -68,6 +77,31 @@ export default function TopBar() {
     });
   };
 
+  useEffect(() => {
+    if (searchActive && pathname !== "/presentation/search_result_events") {
+      router.push("/presentation/search_result_events");
+    } else if (!searchActive && pathname !== "/presentation/day_presentation") {
+      router.push("/presentation/day_presentation");
+    }
+  }, [searchActive]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedText(searchText);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [searchText]);
+
+  useEffect(() => {
+    if (debouncedText) {
+      console.log("Debounced search:", debouncedText);
+      setEvents(calendarId, debouncedText);
+    } else {
+      clearEvents();
+    }
+  }, [debouncedText]);
+
   return (
     <View
       style={{
@@ -81,24 +115,53 @@ export default function TopBar() {
         paddingInline: 41,
       }}
     >
-      <SearchIcon />
-      <View style={{ flexDirection: "row", gap: 12 }}>
-        <TouchableOpacity onPress={openCalendarPicker}>
-          <FilterIcon />
-        </TouchableOpacity>
+      {searchActive ? (
+        <>
+          <TextInput
+            placeholder="Пошук..."
+            value={searchText}
+            onChangeText={setSearchText}
+            style={{
+              flex: 1,
+              color: "black",
+              paddingVertical: 8,
+              paddingHorizontal: 12,
+              backgroundColor: "white",
+              borderRadius: 20,
+            }}
+          />
+          <TouchableOpacity
+            onPress={() => setSearchActive(false)}
+            style={{ marginLeft: 10 }}
+          >
+            <Feather name="x" size={24} color="black" />
+          </TouchableOpacity>
+        </>
+      ) : (
+        <>
+          <TouchableOpacity onPress={() => setSearchActive(true)}>
+            <SearchIcon />
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={openDatePicker}>
-          <CalendarDaysIcon />
-        </TouchableOpacity>
+          <View style={{ flexDirection: "row", gap: 12 }}>
+            <TouchableOpacity onPress={openCalendarPicker}>
+              <FilterIcon />
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={openCalendarPresentationPicker}>
-          <MoreGridBigIcon />
-        </TouchableOpacity>
+            <TouchableOpacity onPress={openDatePicker}>
+              <CalendarDaysIcon />
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={openUserProfileOrLogin}>
-          <MoreVerticalIcon />
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity onPress={openCalendarPresentationPicker}>
+              <MoreGridBigIcon />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={openUserProfileOrLogin}>
+              <MoreVerticalIcon />
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
 
       {showDatePicker && (
         <DateTimePicker

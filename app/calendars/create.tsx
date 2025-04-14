@@ -1,5 +1,5 @@
 import FormTopBar from "@/components/TopBars/FormTopBar";
-import { Colors } from "@/contants/Colors";
+import { calendarColors, Colors } from "@/contants/Colors";
 import { Styles } from "@/contants/Styles";
 import React, { useEffect, useState } from "react";
 import {
@@ -22,9 +22,8 @@ const create = () => {
     ? JSON.parse(calendar as string)
     : null;
 
-  const colors = ["#00F400", "#867759", "#098800", "#048921"];
   const [text, onChangeText] = useState("");
-  const [color, setColor] = useState(colors[0]);
+  const [color, setColor] = useState(calendarColors[0]);
   const [users, setUsers] = useState<string[]>([]);
   const [user, setUser] = useState("");
 
@@ -32,7 +31,7 @@ const create = () => {
     if (parsedCalendar) {
       onChangeText(parsedCalendar.calendar_name);
       setColor(parsedCalendar.color);
-      
+
       // Extracting usernames from the parsed calendar's users
       // Omit the current user from the list
       const currentUsername = getCurrentUsername();
@@ -80,7 +79,7 @@ const create = () => {
           : "Calendar successfully created:",
         response.data
       );
-      
+
       // Navigate back or forward after successful creation
       router.back();
     } catch (error: any) {
@@ -94,7 +93,9 @@ const create = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.backgroundColor }}>
-      <FormTopBar title={parsedCalendar ? "Зміна календарю" : "Новий календар"}  />
+      <FormTopBar
+        title={parsedCalendar ? "Зміна календарю" : "Новий календар"}
+      />
       <View
         style={{ flex: 1, backgroundColor: Colors.backgroundColor, gap: 10 }}
       >
@@ -115,7 +116,7 @@ const create = () => {
           selectedValue={color}
           onValueChange={(itemValue) => setColor(itemValue)}
         >
-          {colors.map((color) => (
+          {calendarColors.map((color) => (
             <Picker.Item
               key={color}
               style={{ backgroundColor: color }}

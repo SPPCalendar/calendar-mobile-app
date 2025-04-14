@@ -1,3 +1,5 @@
+import { useCalendarPresentationStore } from "@/stores/calendar_presentation_store";
+import { CalendarPresentation } from "@/types/CalendarPresentation";
 import { Month } from "@/types/Month";
 import { getMonthDates, getUkrainianMonthName } from "@/utils/utils";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -13,12 +15,16 @@ const SmallMonthItem: React.FC<Props> = ({ month, year }) => {
   const monthDatesSplitByWeeks = getMonthDates(month, year);
   const needsEmptyRow = monthDatesSplitByWeeks.length < 6;
   const router = useRouter();
+  const changePresentation = useCalendarPresentationStore(
+    (state) => state.changePresentation
+  );
 
   const openMonthPresentation = () => {
     router.push({
       pathname: "/presentation/month_presentation",
       params: { monthParam: month, yearParam: year },
     });
+    changePresentation(CalendarPresentation.Month);
   };
 
   return (
@@ -45,6 +51,7 @@ const SmallMonthItem: React.FC<Props> = ({ month, year }) => {
           .map((_, index) => (
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
+              key={index}
             >
               {monthDatesSplitByWeeks[index].map((date, index) => (
                 <View
