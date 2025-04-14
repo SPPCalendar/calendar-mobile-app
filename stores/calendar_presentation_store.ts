@@ -8,7 +8,7 @@ interface CalendarPresentationState {
 
 export const useCalendarPresentationStore = create<CalendarPresentationState>(
   (set) => ({
-    presentation: CalendarPresentation.Month,
+    presentation: CalendarPresentation.Day,
     changePresentation: (presentation) => set({ presentation: presentation }),
   })
 );
