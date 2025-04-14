@@ -36,6 +36,10 @@ const NewEventForm = () => {
       onChangeText(parsedEvent.event_name);
       setStartDate(new Date(parsedEvent.start_time));
       setEndDate(new Date(parsedEvent.end_time));
+
+      if (parsedEvent.description) {
+        setDescription(parsedEvent.description);
+      }
     }
   }, []);
 
