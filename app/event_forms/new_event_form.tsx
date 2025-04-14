@@ -16,21 +16,17 @@ const NewEventForm = () => {
   const parsedEvent: CalendarEvent | null = event
     ? JSON.parse(event as string)
     : null;
+  const currentDate = new Date();
+  const calendarId = useCalendarStore((state) => state.calendarId);
 
   const [text, onChangeText] = useState("");
   const [isWholeDay, setIsWholeDay] = useState(false);
-  const [notify, enableNotifications] = useState(false);
-
-  const currentDate = new Date();
-
   const [startDate, setStartDate] = useState(
     new Date(currentDate.setMinutes(0, 0, 0))
   );
   const [endDate, setEndDate] = useState(
     new Date(currentDate.setHours(currentDate.getHours() + 1, 0, 0, 0))
   );
-
-  const calendarId = useCalendarStore((state) => state.calendarId);
 
   useEffect(() => {
     if (parsedEvent) {
@@ -68,7 +64,7 @@ const NewEventForm = () => {
     }
   }, [endDate]);
 
-  const handleCreateEvent = async () => {
+  const handleCreateOrEditEvent = async () => {
     if (!calendarId) {
       console.warn("No calendar selected");
       return;
@@ -97,7 +93,14 @@ const NewEventForm = () => {
       );
 
       // Navigate to another screen after creating the event
-      router.back();
+      if (parsedEvent) {
+        router.navigate({
+          pathname: "/presentation/event_details",
+          params: { event: JSON.stringify(response.data) },
+        });
+      } else {
+        router.back();
+      }
     } catch (error: any) {
       console.error(
         "Failed to create event:",
@@ -147,7 +150,7 @@ const NewEventForm = () => {
           borderRadius: 30,
           alignItems: "center",
         }}
-        onPress={handleCreateEvent}
+        onPress={handleCreateOrEditEvent}
       >
         <Text style={[Styles.textInputText, { color: "#fff" }]}>
           {parsedEvent ? "Зберегти зміни" : "Створити подію"}
