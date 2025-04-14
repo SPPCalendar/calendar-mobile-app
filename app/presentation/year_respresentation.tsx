@@ -30,7 +30,7 @@ export default function YearRespresentation() {
         onPressLeftArrow={moveMinusOneYear}
         onPressRightArrow={movePlusOneYear}
       />
-      <CalendarYearGrid style={{ marginTop: 35 }} />
+      <CalendarYearGrid style={{ marginTop: 35 }} year={year} />
     </View>
   );
 }

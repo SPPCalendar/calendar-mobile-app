@@ -10,10 +10,20 @@ import { getMonthDates } from "@/utils/utils";
 import { useCalendarStore } from "@/stores/calendar_store";
 import { fetchMonthEvents } from "@/utils/eventApi";
 import { CalendarEvent } from "@/types/CalendarEvent";
+import { useLocalSearchParams } from "expo-router";
 
 export default function MonthPresentation() {
-  const [month, setMonth] = useState(dayjs().month() + 1); // dayjs months are 0-indexed, so we add 1 to keep in line with enums
-  const [year, setYear] = useState(dayjs().year());
+  const { monthParam, yearParam } = useLocalSearchParams();
+  const parsedMonth =
+    typeof monthParam === "string"
+      ? parseInt(monthParam, 10)
+      : dayjs().month() + 1;
+  const parsedYear =
+    typeof yearParam === "string" ? parseInt(yearParam, 10) : dayjs().year();
+
+  const [month, setMonth] = useState<Month>(parsedMonth as Month); // dayjs months are 0-indexed, so we add 1 to keep in line with enums
+  const [year, setYear] = useState(parsedYear);
+
   const [monthDates, setMonthDates] = useState(() =>
     getMonthDates(month, year)
   );
