@@ -20,6 +20,7 @@ const NewEventForm = () => {
   const calendarId = useCalendarStore((state) => state.calendarId);
 
   const [text, onChangeText] = useState("");
+  const [description, setDescription] = useState("");
   const [isWholeDay, setIsWholeDay] = useState(false);
   const [startDate, setStartDate] = useState(
     new Date(currentDate.setMinutes(0, 0, 0))
@@ -27,6 +28,8 @@ const NewEventForm = () => {
   const [endDate, setEndDate] = useState(
     new Date(currentDate.setHours(currentDate.getHours() + 1, 0, 0, 0))
   );
+
+  const [descriptionHeight, setDescriptionHeight] = useState(100);
 
   useEffect(() => {
     if (parsedEvent) {
@@ -73,6 +76,7 @@ const NewEventForm = () => {
     try {
       const requestBody = {
         event_name: text,
+        description: description,
         start_time: startDate.toISOString(),
         end_time: endDate.toISOString(),
         color: "#007AFF", // Static for now; could come from category later
@@ -116,12 +120,34 @@ const NewEventForm = () => {
         style={[
           Styles.textInput,
           Styles.textInputText,
-          { marginTop: 38, paddingLeft: 30 },
+          { marginTop: 38, 
+            paddingLeft: 30, 
+            paddingRight: 30,
+          },
         ]}
+        multiline
         placeholderTextColor={Colors.textInputPlaceholder}
         onChangeText={onChangeText}
         value={text}
         placeholder="Назва"
+      />
+
+      <TextInput
+        style={[
+          Styles.textInput,
+          Styles.textInputText,
+          {
+            minHeight: 100,
+            paddingLeft: 30,
+            paddingRight: 30,
+            textAlignVertical: "top", // Ensures multiline text starts from the top
+          },
+        ]}
+        multiline
+        placeholderTextColor={Colors.textInputPlaceholder}
+        onChangeText={setDescription}
+        value={description}
+        placeholder="Опис"
       />
 
       <View style={[Styles.textInput]}>
@@ -141,7 +167,7 @@ const NewEventForm = () => {
         />
       </View>
 
-      <CategoryEventPicker />
+      {/* <CategoryEventPicker /> */}
 
       <TouchableOpacity
         style={{
