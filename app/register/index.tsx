@@ -6,6 +6,7 @@ import { TextInput, Text, View, TouchableOpacity } from "react-native";
 import api from "@/utils/api";
 import { useAuthStore } from "@/stores/auth_store";
 import { useCalendarStore } from "@/stores/calendar_store";
+import { getCurrentUsername } from "@/utils/authTokenHelper";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const RegisterForm = () => {
           color: "#123456",
           users: [
             {
-              user_id: userId,
+              username: getCurrentUsername(),
               access_level: "owner",
             },
           ],
