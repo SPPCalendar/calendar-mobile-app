@@ -69,10 +69,12 @@ const EventDetails = () => {
       )}
 
       <Text style={styles.text}>
-        Початок: {dayjs(parsedEvent.start_time).format("DD.MM.YYYY HH:mm")}
+      <Text style={{ fontWeight: 'bold' }}>Початок: </Text>
+        {dayjs(parsedEvent.start_time).format("DD.MM.YYYY HH:mm")}
       </Text>
       <Text style={styles.text}>
-        Кінець: {dayjs(parsedEvent.end_time).format("DD.MM.YYYY HH:mm")}
+        <Text style={{ fontWeight: 'bold' }}>Кінець: </Text> 
+        {dayjs(parsedEvent.end_time).format("DD.MM.YYYY HH:mm")}
       </Text>
 
       <View style={{ gap: 10, marginTop: 20 }}>

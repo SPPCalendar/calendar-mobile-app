@@ -7,6 +7,7 @@ import api from "@/utils/api";
 import { useAuthStore } from "@/stores/auth_store";
 import { useCalendarStore } from "@/stores/calendar_store";
 import { getCurrentUsername } from "@/utils/authTokenHelper";
+import { ActivityIndicator } from "react-native";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -15,10 +16,15 @@ const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
+    if (!emailRegex.test(email)) {
+      alert("Неправильний формат електронної пошти");
+      return false;
+    }
+    return true;
   };
 
   const validatePassword = (password: string): boolean => {
@@ -32,12 +38,12 @@ const RegisterForm = () => {
       return false;
     }
 
-    if (/[a-zA-Z]/.test(password)) {
+    if (!/[a-zA-Z]/.test(password)) {
       alert("Пароль має містити хоча б одну букву");
       return false;
     }
 
-    if (/\d/.test(password)) {
+    if (!/\d/.test(password)) {
       alert("Пароль має містити хоча б одну цифру");
       return false;
     }
@@ -51,6 +57,7 @@ const RegisterForm = () => {
         return;
       }
 
+      setLoading(true);
       const response = await api.post("/auth/register", {
         display_name: displayName,
         username,
@@ -90,6 +97,8 @@ const RegisterForm = () => {
         error?.response?.data || error.message
       );
       alert("Не вдалося зареєструватися. Спробуйте ще раз.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -154,10 +163,16 @@ const RegisterForm = () => {
           paddingVertical: 16,
           borderRadius: 30,
           alignItems: "center",
+          opacity: loading ? 0.6 : 1,
         }}
         onPress={handleRegister}
+        disabled={loading}
       >
-        <Text style={{ color: "#fff", fontSize: 18 }}>Зареєструватись</Text>
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={{ color: "#fff", fontSize: 18 }}>Зареєструватись</Text>
+        )}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.push("./login")}>

@@ -2,18 +2,23 @@ import { Colors } from "@/contants/Colors";
 import { Styles } from "@/contants/Styles";
 import { Href, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { TextInput, Text, View, TouchableOpacity } from "react-native";
+import { TextInput, Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
 import api from "@/utils/api";
 import { useAuthStore } from "@/stores/auth_store";
 import { useCalendarStore } from "@/stores/calendar_store";
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const LoginForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     try {
+      setLoading(true);
+      
       const response = await api.post("/auth/login", {
         email,
         password,
@@ -44,6 +49,8 @@ const LoginForm = () => {
     } catch (error: any) {
       console.error("Login failed:", error?.response?.data || error.message);
       alert("Невірний логін або пароль. Спробуйте ще раз.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,10 +80,16 @@ const LoginForm = () => {
           paddingVertical: 16,
           borderRadius: 30,
           alignItems: "center",
+          opacity: loading ? 0.6 : 1,
         }}
         onPress={handleLogin}
+        disabled={loading}
       >
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
         <Text style={{ color: "#fff", fontSize: 18 }}>Увійти</Text>
+        )}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.push("./register")}>

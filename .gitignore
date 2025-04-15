@@ -2,6 +2,7 @@
 
 .vscode
 .idea
+android
 
 # dependencies
 node_modules/
