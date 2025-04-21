@@ -1,4 +1,4 @@
-import { Colors } from "@/contants/Colors";
+import { calendarColors, Colors } from "@/contants/Colors";
 import { Styles } from "@/contants/Styles";
 import React, { useEffect, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -10,6 +10,7 @@ import { CalendarEvent } from "@/types/CalendarEvent";
 import api from "@/utils/api";
 import { router, useLocalSearchParams } from "expo-router";
 import dayjs from "dayjs";
+import { Picker } from "@react-native-picker/picker";
 
 const NewEventForm = () => {
   const { event } = useLocalSearchParams();
@@ -22,6 +23,7 @@ const NewEventForm = () => {
   const [text, onChangeText] = useState("");
   const [description, setDescription] = useState("");
   const [isWholeDay, setIsWholeDay] = useState(false);
+  const [color, setColor] = useState(calendarColors[0]);
   const [startDate, setStartDate] = useState(
     new Date(currentDate.setMinutes(0, 0, 0))
   );
@@ -83,7 +85,7 @@ const NewEventForm = () => {
         description: description,
         start_time: startDate.toISOString(),
         end_time: endDate.toISOString(),
-        color: "#007AFF", // Static for now; could come from category later
+        color: color, // Static for now; could come from category later
         calendar_id: calendarId,
       };
 
@@ -172,6 +174,24 @@ const NewEventForm = () => {
       </View>
 
       {/* <CategoryEventPicker /> */}
+      <Picker
+          style={{
+            backgroundColor: color,
+            width: "50%",
+            marginInline: "auto",
+          }}
+          selectedValue={color}
+          onValueChange={(itemValue) => setColor(itemValue)}
+        >
+          {calendarColors.map((color) => (
+            <Picker.Item
+              key={color}
+              style={{ backgroundColor: color }}
+              label={color}
+              value={color}
+            />
+          ))}
+        </Picker>
 
       <TouchableOpacity
         style={{
