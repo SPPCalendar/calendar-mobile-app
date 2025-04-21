@@ -22,7 +22,7 @@ const ChooseCalendarModal = () => {
   const { calendarId, setCalendarId } = useCalendarStore();
   const router = useRouter();
 
-  useFocusEffect(() => {
+  useEffect(() => {
     const fetchCalendars = async () => {
       try {
         const response = await api.get<Calendar[]>("/calendars/me");
@@ -36,7 +36,7 @@ const ChooseCalendarModal = () => {
     };
 
     fetchCalendars();
-  });
+  }, [calendars]);
 
   const chooseCalendar = (calendar: Calendar) => {
     setCalendarId(calendar.id);

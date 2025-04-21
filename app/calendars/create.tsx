@@ -143,8 +143,31 @@ const create = () => {
         ></Button>
 
         {users.map((user, i) => (
-          <Text key={i}>{user}</Text>
+          <View
+            key={i}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingHorizontal: 10,
+              paddingVertical: 8,
+              backgroundColor: "#f0f0f0",
+              borderRadius: 10,
+              marginVertical: 4,
+            }}
+          >
+            <Text style={[Styles.textInputText]}>{user}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                const updatedUsers = users.filter((u, index) => u !== user);
+                setUsers(updatedUsers);
+              }}
+            >
+              <Text style={{ color: "red", fontWeight: "bold", fontSize: 16 }}>✕</Text>
+            </TouchableOpacity>
+          </View>
         ))}
+
 
         <TouchableOpacity
           style={{

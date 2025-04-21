@@ -24,7 +24,7 @@ export const fetchEvents = async (
   }
 
   try {
-    const response = await api.get<CalendarEvent[]>("/events", {
+    const response = await api.get("/events", {
       params: {
         calendar_id: calendarId,
         start_time: startDate.toISOString(),
@@ -33,7 +33,7 @@ export const fetchEvents = async (
       },
     });
 
-    return response.data;
+    return response.data.data;
   } catch (error: any) {
     console.error("Failed to fetch events:", error?.response?.data || error.message);
     return [];
