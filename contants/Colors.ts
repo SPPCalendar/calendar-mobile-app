@@ -33,4 +33,5 @@ export const calendarColors: string[] = [
   "#FFD700", // Golden Yellow
   "#FF7F50", // Coral
   "#800080", // Bright Purple
+  "#007AFF", // Just Blue
 ];
