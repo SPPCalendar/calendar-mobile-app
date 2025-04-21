@@ -27,16 +27,16 @@ const CalendarPresentationPickerModal = () => {
 
     switch (presentation) {
       case CalendarPresentation.Day:
-        router.navigate("/presentation/day_presentation");
+        router.replace("/presentation/day_presentation");
         break;
       case CalendarPresentation.Week:
-        router.navigate("/presentation/week_presentation");
+        router.replace("/presentation/week_presentation");
         break;
       case CalendarPresentation.Month:
-        router.navigate("/presentation/month_presentation");
+        router.replace("/presentation/month_presentation");
         break;
       case CalendarPresentation.Year:
-        router.navigate("/presentation/year_respresentation");
+        router.replace("/presentation/year_respresentation");
         break;
     }
   };
